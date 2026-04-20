@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAGGOT//OS_TERMINAL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Oswald:wght@700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS Dosyaları/u1.css">
+    <link rel="icon" type="image/jpeg" href="../Resimler/site-icon.jpg">
+    <style>
+        body { background: #000; }
+
+        .terminal-wrapper {
+            padding: 30px 0 60px;
+        }
+
+        .terminal-topbar {
+            background: #0d0000;
+            border: 1px solid var(--blood-red);
+            border-bottom: none;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .topbar-dots { display: flex; gap: 8px; }
+        .topbar-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+        }
+        .dot-close { background: #cc3333; }
+        .dot-min { background: #ccaa00; }
+        .dot-max { background: #33aa33; }
+
+        .topbar-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--dim-white);
+        }
+
+        .topbar-status {
+            font-family: 'Courier New', monospace;
+            font-size: 0.65rem;
+            color: var(--blood-red);
+        }
+
+        .terminal-container {
+            background: #000;
+            border: 1px solid var(--blood-red);
+            border-top: none;
+            min-height: 520px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0,0,0,0.08) 3px,
+                    rgba(0,0,0,0.08) 4px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .terminal-output {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .t-line { margin: 2px 0; display: block; word-break: break-all; }
+        .t-prompt { color: var(--pure-red); font-weight: bold; }
+        .t-output { color: #c8c0b8; }
+        .t-error { color: var(--pure-red); }
+        .t-success { color: #22cc55; }
+        .t-warn { color: #ff8800; }
+        .t-info { color: #4488ff; }
+        .t-dim { color: #4a4240; }
+        .t-header { color: #cc0000; font-weight: bold; letter-spacing: 2px; }
+        .t-separator { color: #2a0000; }
+
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px 20px;
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(74,0,0,0.4);
+        }
+
+        .t-prompt-prefix {
+            color: var(--pure-red);
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+            margin-right: 8px;
+        }
+
+        #terminalInput {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #c8c0b8;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            caret-color: var(--pure-red);
+        }
+
+        .cursor-block {
+            display: inline-block;
+            width: 9px;
+            height: 16px;
+            background: var(--pure-red);
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Side panels */
+        .side-panel {
+            background: #050000;
+            border: 1px solid var(--dried-blood);
+            padding: 16px;
+            margin-bottom: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .side-panel-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--blood-red);
+            border-bottom: 1px solid var(--dried-blood);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .process-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(74,0,0,0.2);
+            color: var(--dim-white);
+        }
+
+        .process-row:hover { color: var(--grunge-white); }
+
+        .cpu-bar {
+            height: 4px;
+            background: var(--dried-blood);
+            margin-top: 3px;
+        }
+
+        .cpu-bar .fill {
+            height: 100%;
+            background: var(--pure-red);
+            transition: width 2s ease;
+        }
+
+        .help-cmd {
+            font-size: 0.72rem;
+            padding: 3px 0;
+            color: var(--dim-white);
+            border-bottom: 1px solid rgba(74,0,0,0.2);
+        }
+
+        .help-cmd span {
+            color: var(--pure-red);
+            min-width: 120px;
+            display: inline-block;
+        }
+
+        .ascii-art {
+            font-size: 0.4rem;
+            line-height: 1.2;
+            color: #3a0000;
+            white-space: pre;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .ascii-art { display: none; }
+            .terminal-output { font-size: 0.75rem; }
+            .side-panel { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="scanline-overlay"></div>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand slipknot-brand" href="index.html">MAGGOT//OS [9]</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ms-auto slipknot-nav">
+                <li class="nav-item"><a class="nav-link" href="system.html">IOWA_SYSTEM</a></li>
+                <li class="nav-item"><a class="nav-link" href="mask.html">MASKS</a></li>
+                <li class="nav-item"><a class="nav-link" href="discograpy.html">DISCOGRAPHY</a></li>
+                <li class="nav-item"><a class="nav-link active" href="terminal.html">TERMINAL</a></li>
+                <li class="nav-item"><a class="nav-link" href="knotfest.html">KNOTFEST</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid terminal-wrapper">
+    <div class="row g-3">
+
+        <!-- LEFT SIDEBAR -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="side-panel">
+                <div class="side-panel-title">// PROCESS MONITOR</div>
+                <div id="processList">
+                    <div class="process-row"><span>iowa_core.exe</span><span class="t-success">●</span></div>
+                    <div class="process-row"><span>people_shit.dll</span><span class="t-success">●</span></div>
+                    <div class="process-row"><span>maggot_daemon</span><span class="t-success">●</span></div>
+                    <div class="process-row"><span>audio_ritual.sys</span><span class="t-warn">●</span></div>
+                    <div class="process-row"><span>sanity_check.exe</span><span class="t-error">✖</span></div>
+                    <div class="process-row"><span>knotfest_api</span><span class="t-success">●</span></div>
+                    <div class="process-row"><span>mask_scanner.bin</span><span class="t-success">●</span></div>
+                    <div class="process-row"><span>corey_voice.mod</span><span class="t-success">●</span></div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="side-panel-title">// RESOURCE USAGE</div>
+                <div style="font-size:0.7rem; color:var(--dim-white);">
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between"><span>CPU</span><span id="cpuVal" class="t-error">94%</span></div>
+                        <div class="cpu-bar"><div class="fill" id="cpuBar" style="width:94%"></div></div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between"><span>RAM</span><span id="ramVal" class="t-warn">78%</span></div>
+                        <div class="cpu-bar"><div class="fill" id="ramBar" style="width:78%; background:var(--warning-amber)"></div></div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between"><span>DISTORT</span><span class="t-success">MAX</span></div>
+                        <div class="cpu-bar"><div class="fill" style="width:100%"></div></div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between"><span>SANITY</span><span class="t-error">0%</span></div>
+                        <div class="cpu-bar"><div class="fill" style="width:0%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="side-panel-title">// NETWORK STATUS</div>
+                <div style="font-size:0.7rem; color:var(--dim-white);">
+                    <div class="process-row"><span>maggot.net</span><span class="t-success">ONLINE</span></div>
+                    <div class="process-row"><span>knotfest.api</span><span class="t-success">ONLINE</span></div>
+                    <div class="process-row"><span>humanity.link</span><span class="t-error">OFFLINE</span></div>
+                    <div class="process-row"><span>iowa.core</span><span class="t-success">ONLINE</span></div>
+                    <div class="process-row"><span>peace.srv</span><span class="t-error">NOT FOUND</span></div>
+                </div>
+                <div style="margin-top:10px; font-size:0.65rem; color:var(--blood-red);">
+                    PING: 6.6ms &nbsp;|&nbsp; UPTIME: 25y
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN TERMINAL -->
+        <div class="col-lg-6">
+            <div class="terminal-topbar">
+                <div class="topbar-dots">
+                    <div class="topbar-dot dot-close"></div>
+                    <div class="topbar-dot dot-min"></div>
+                    <div class="topbar-dot dot-max"></div>
+                </div>
+                <div class="topbar-title">MAGGOT_OS — KERNEL v6.6.6 — TERMINAL</div>
+                <div class="topbar-status" id="clockDisplay">--:--:--</div>
+            </div>
+
+            <div class="terminal-container">
+                <div class="terminal-output" id="termOutput">
+                    <!-- Boot sequence will be injected here by JS -->
+                </div>
+                <div class="terminal-input-row">
+                    <span class="t-prompt-prefix">root@slipknot:~$</span>
+                    <input type="text" id="terminalInput" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="">
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="side-panel">
+                <div class="side-panel-title">// AVAILABLE COMMANDS</div>
+                <div class="help-cmd"><span>help</span>list commands</div>
+                <div class="help-cmd"><span>members</span>list all 9</div>
+                <div class="help-cmd"><span>albums</span>discography</div>
+                <div class="help-cmd"><span>whoami</span>identity check</div>
+                <div class="help-cmd"><span>scan</span>system scan</div>
+                <div class="help-cmd"><span>play [song]</span>audio ritual</div>
+                <div class="help-cmd"><span>knotfest</span>tour dates</div>
+                <div class="help-cmd"><span>status</span>system status</div>
+                <div class="help-cmd"><span>mask [#]</span>member mask</div>
+                <div class="help-cmd"><span>lyrics [song]</span>lyric fragment</div>
+                <div class="help-cmd"><span>album [name]</span>album details</div>
+                <div class="help-cmd"><span>song [name]</span>track details</div>
+                <div class="help-cmd"><span>random</span>random song</div>
+                <div class="help-cmd"><span>fortune</span>random lyric</div>
+                <div class="help-cmd"><span>cowsay</span>metal message</div>
+                <div class="help-cmd"><span>countdown</span>next ritual</div>
+                <div class="help-cmd"><span>weather</span>Des Moines</div>
+                <div class="help-cmd"><span>ping</span>latency test</div>
+                <div class="help-cmd"><span>history</span>command history</div>
+                <div class="help-cmd"><span>echo</span>print message</div>
+                <div class="help-cmd"><span>uname</span>system info</div>
+                <div class="help-cmd"><span>neofetch</span>system logo</div>
+                <div class="help-cmd"><span>sl</span>train easter egg</div>
+                <div class="help-cmd"><span>reboot</span>restart system</div>
+                <div class="help-cmd"><span>clear/cls</span>clear screen</div>
+                <div class="help-cmd"><span>date</span>current time</div>
+                <div class="help-cmd"><span>top</span>process info</div>
+            </div>
+
+            <div class="side-panel">
+                <div class="side-panel-title">// SYSTEM LOG</div>
+                <div id="sysLog" style="font-size:0.65rem; color:var(--dim-white); max-height:200px; overflow:hidden;">
+                    <div>[OK] iowa_core: loaded</div>
+                    <div>[OK] audio_ritual: init</div>
+                    <div>[WARN] sanity: 0%</div>
+                    <div>[OK] maggot_net: up</div>
+                    <div>[ERR] humanity: null</div>
+                    <div>[OK] masks: scanned</div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="side-panel-title">// QUICK STATS</div>
+                <div style="font-size:0.7rem;">
+                    <div class="process-row"><span style="color:var(--dim-white)">ALBUMS</span><span class="t-error">7 STUDIO</span></div>
+                    <div class="process-row"><span style="color:var(--dim-white)">MEMBERS</span><span class="t-error">9 ACTIVE</span></div>
+                    <div class="process-row"><span style="color:var(--dim-white)">FOUNDED</span><span class="t-error">1995</span></div>
+                    <div class="process-row"><span style="color:var(--dim-white)">RECORDS</span><span class="t-error">30M+ SOLD</span></div>
+                    <div class="process-row"><span style="color:var(--dim-white)">GRAMMYS</span><span class="t-error">1 WIN / 3 NOM</span></div>
+                    <div class="process-row"><span style="color:var(--dim-white)">NEXT SHOW</span><span class="t-warn">31 OCT 2026</span></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const output = document.getElementById('termOutput');
+const input = document.getElementById('terminalInput');
+let history = [];
+let histIdx = -1;
+let cmdHistory = []; // stores executed commands
+
+// Clock
+function updateClock() {
+    const now = new Date();
+    document.getElementById('clockDisplay').textContent =
+        now.toTimeString().split(' ')[0];
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// Animate resource bars
+function animateResources() {
+    const cpuVal = 80 + Math.floor(Math.random() * 18);
+    const ramVal = 70 + Math.floor(Math.random() * 15);
+    document.getElementById('cpuVal').textContent = cpuVal + '%';
+    document.getElementById('ramVal').textContent = ramVal + '%';
+    document.getElementById('cpuBar').style.width = cpuVal + '%';
+    document.getElementById('ramBar').style.width = ramVal + '%';
+}
+setInterval(animateResources, 3000);
+
+function addLine(text, cls = 't-output') {
+    const span = document.createElement('span');
+    span.className = 't-line ' + cls;
+    span.innerHTML = text;
+    output.appendChild(span);
+    output.scrollTop = output.scrollHeight;
+}
+
+function addBlank() { addLine('&nbsp;'); }
+
+async function typeLines(lines) {
+    for (const [text, cls, delay] of lines) {
+        await new Promise(r => setTimeout(r, delay || 40));
+        addLine(text, cls || 't-output');
+    }
+}
+
+// Boot sequence
+const bootLines = [
+    ['██████████████████████████████████████████████████████████', 't-dim', 0],
+    ['', 't-output', 100],
+    ['  ███╗   ███╗ █████╗  ██████╗  ██████╗  ██████╗ ████████╗', 't-error', 80],
+    ['  ████╗ ████║██╔══██╗██╔════╝ ██╔════╝ ██╔═══██╗╚══██╔══╝', 't-error', 60],
+    ['  ██╔████╔██║███████║██║  ███╗██║  ███╗██║   ██║   ██║   ', 't-error', 60],
+    ['  ██║╚██╔╝██║██╔══██║██║   ██║██║   ██║██║   ██║   ██║   ', 't-error', 60],
+    ['  ██║ ╚═╝ ██║██║  ██║╚██████╔╝╚██████╔╝╚██████╔╝   ██║   ', 't-error', 60],
+    ['  ╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝    ╚═╝   ', 't-error', 60],
+    ['', 't-output', 50],
+    ['  MAGGOT//OS v6.6.6 — NONAGON KERNEL — EST. 1995', 't-warn', 60],
+    ['  IF YOU\'RE 555 THEN I\'M 666', 't-dim', 40],
+    ['', 't-output', 100],
+    ['██████████████████████████████████████████████████████████', 't-dim', 40],
+    ['', 't-output', 300],
+    ['[BOOT] Initializing IOWA core system...', 't-success', 200],
+    ['[BOOT] Loading audio_ritual module...', 't-success', 180],
+    ['[BOOT] Scanning 9 member nodes...', 't-success', 180],
+    ['[BOOT] Allocating distortion buffer: 4096MB... OK', 't-success', 200],
+    ['[BOOT] Sanity check process... <span style="color:var(--pure-red)">FAILED — 0% REMAINING</span>', 't-output', 200],
+    ['[BOOT] Crowd energy threshold: EXCEEDED', 't-warn', 180],
+    ['[BOOT] Humanity module... <span style="color:var(--pure-red)">NOT FOUND</span>', 't-output', 200],
+    ['[BOOT] maggot_daemon started. PID: 1995', 't-success', 150],
+    ['[BOOT] knotfest_api connected. Status: ACTIVE', 't-success', 150],
+    ['[BOOT] peace.srv... connection refused.', 't-error', 200],
+    ['', 't-output', 200],
+    ['ALL SYSTEMS RED. TOTAL CONTROL ESTABLISHED.', 't-error', 100],
+    ['', 't-output', 200],
+    ['Type <span style="color:var(--pure-red)">help</span> for available commands. The pit is open.', 't-dim', 80],
+    ['', 't-output', 40],
+];
+
+typeLines(bootLines);
+
+// ----------------------------------------------
+// ENHANCED COMMANDS DATABASE
+// ----------------------------------------------
+
+// Song database for random & song command
+const songsDB = {
+    'sic': { title: '(SIC)', album: 'Slipknot (1999)', duration: '3:42', lyric: 'Nothing\'s going right and everything\'s a mess.' },
+    'iowa': { title: 'IOWA', album: 'Iowa (2001)', duration: '8:35', lyric: 'Medicate... pull the window shade. I am not afraid.' },
+    'unsainted': { title: 'UNSAINTED', album: 'We Are Not Your Kind (2019)', duration: '5:37', lyric: 'Am I the only one? Am I the only one?' },
+    'duality': { title: 'DUALITY', album: 'Vol. 3 (2004)', duration: '4:00', lyric: 'I push my fingers into my eyes.' },
+    'psychosocial': { title: 'PSYCHOSOCIAL', album: 'All Hope Is Gone (2008)', duration: '4:43', lyric: 'I did my time and I want out.' },
+    'people': { title: 'PEOPLE = SHIT', album: 'Iowa (2001)', duration: '3:57', lyric: 'People = shit. That\'s all that it ever meant.' },
+    'wait': { title: 'WAIT AND BLEED', album: 'Slipknot (1999)', duration: '2:27', lyric: 'I never had to knock on wood.' },
+    'heretic': { title: 'THE HERETIC ANTHEM', album: 'Iowa (2001)', duration: '5:16', lyric: 'If you\'re 555, then I\'m 666.' },
+    'nero': { title: 'NERO FORTE', album: 'We Are Not Your Kind (2019)', duration: '4:16', lyric: 'The devil in me smiles.' },
+    'before': { title: 'BEFORE I FORGET', album: 'Vol. 3 (2004)', duration: '4:38', lyric: 'I am a world before I am a man.' },
+    'dead': { title: 'DEAD MEMORIES', album: 'All Hope Is Gone (2008)', duration: '4:28', lyric: 'You never know if you\'re the first to go.' },
+    'thedevil': { title: 'THE DEVIL IN I', album: '.5: The Gray Chapter (2014)', duration: '5:42', lyric: 'Step inside, see the devil in I.' }
+};
+
+const albumDetails = {
+    'slipknot': { year: '1999', tracks: ['742617000027', '(sic)', 'Eyeless', 'Wait and Bleed', 'Surfacing', 'Spit It Out'], cert: '2x Platinum' },
+    'iowa': { year: '2001', tracks: ['(515)', 'People = Shit', 'Disasterpiece', 'My Plague', 'The Heretic Anthem'], cert: 'Platinum' },
+    'vol3': { year: '2004', tracks: ['Prelude 3.0', 'The Blister Exists', 'Duality', 'Before I Forget', 'Vermilion'], cert: 'Platinum' },
+    'ahig': { year: '2008', tracks: ['Execute', 'Gematria', 'Sulfur', 'Psychosocial', 'Dead Memories'], cert: 'Platinum' },
+    'graychapter': { year: '2014', tracks: ['XIX', 'Sarcastrophe', 'AOV', 'The Devil in I', 'Killpop'], cert: 'Gold' },
+    'wanyk': { year: '2019', tracks: ['Insert Coin', 'Unsainted', 'Birth of the Cruel', 'Nero Forte', 'Critical Darling'], cert: 'Silver' },
+    'theend': { year: '2022', tracks: ['Adderall', 'The Dying Song', 'The Chapeltown Rag', 'Yen', 'Hive Mind'], cert: 'NEW' }
+};
+
+const fortunes = [
+    '"People = shit" — Iowa',
+    '"The whole thing, I think it\'s sick" — Corey Taylor',
+    '"I am the push that makes you move" — (SIC)',
+    '"I haven\'t slept since I woke up" — Everything Ends',
+    '"You cannot kill what you did not create" — Unsainted',
+    '"Reaching out for the hand of God, but did you think you\'d shake it?" — Nero Forte',
+    '"I\'m not supposed to be here" — Snuff',
+    '"The only thing you\'ll ever know is that I\'m here to stay" — Surfacing'
+];
+
+const COMMANDS = {
+    help: () => {
+        addLine('┌─────────────────────────────────────────────────────┐', 't-dim');
+        addLine('│  MAGGOT//OS COMMAND REFERENCE                       │', 't-warn');
+        addLine('└─────────────────────────────────────────────────────┘', 't-dim');
+        const cmds = [
+            ['help', 'Display this command list'],
+            ['members', 'List all 9 members with their numbers'],
+            ['albums', 'Full discography with years'],
+            ['whoami', 'Identity diagnostic'],
+            ['scan', 'Run full system scan'],
+            ['play [song]', 'Play a track (try: sic, iowa, unsainted)'],
+            ['knotfest', 'Upcoming tour dates'],
+            ['status', 'System status report'],
+            ['mask [#0-#8]', 'Member mask info'],
+            ['lyrics [song]', 'Lyric fragment database'],
+            ['album [name]', 'Album details (slipknot, iowa, vol3, ahig, graychapter, wanyk, theend)'],
+            ['song [name]', 'Track details (sic, iowa, duality, psychosocial, etc)'],
+            ['random', 'Play random song suggestion'],
+            ['fortune', 'Random Slipknot quote'],
+            ['cowsay [msg]', 'Metal cow says...'],
+            ['countdown', 'Days until next ritual'],
+            ['weather', 'Des Moines ritual weather'],
+            ['ping', 'Network latency test'],
+            ['history', 'Show command history'],
+            ['echo [text]', 'Print message'],
+            ['uname', 'System information'],
+            ['neofetch', 'ASCII logo + system info'],
+            ['sl', 'Train easter egg'],
+            ['top', 'Process info'],
+            ['date', 'Current system date/time'],
+            ['reboot', 'Restart the system'],
+            ['clear/cls', 'Clear terminal output'],
+        ];
+        cmds.forEach(([cmd, desc]) => {
+            addLine(`  <span style="color:var(--pure-red); min-width:160px; display:inline-block">${cmd}</span><span style="color:var(--dim-white)">— ${desc}</span>`, 't-output');
+        });
+        addBlank();
+    },
+    members: () => {
+        addLine('SCANNING MEMBER NODES...', 't-warn');
+        const members = [
+            ['#0', 'SID WILSON', 'TURNTABLES / DJ', 'ACTIVE'],
+            ['#1', 'JOEY JORDISON', 'DRUMS', 'R.I.P. 1975–2021'],
+            ['#2', 'ALESSANDRO VENTURELLA', 'BASS GUITAR', 'ACTIVE'],
+            ['#3', 'MICHAEL PFAFF', 'CUSTOM PERCUSSION', 'ACTIVE'],
+            ['#4', 'JAMES ROOT', 'GUITAR', 'ACTIVE'],
+            ['#5', 'CRAIG JONES', 'SAMPLER / KEYBOARD', 'ACTIVE'],
+            ['#6', 'SHAWN "CLOWN" CRAHAN', 'PERCUSSION / DIRECTOR', 'ACTIVE'],
+            ['#7', 'MICK THOMSON', 'GUITAR', 'ACTIVE'],
+            ['#8', 'COREY TAYLOR', 'VOCALS', 'ACTIVE'],
+        ];
+        addBlank();
+        members.forEach(([num, name, role, status]) => {
+            const sc = status === 'ACTIVE' ? 't-success' : (status.includes('R.I.P') ? 't-dim' : 't-error');
+            addLine(`  <span style="color:var(--pure-red); font-size:1rem;">${num}</span>  <span style="color:#c8c0b8; min-width:220px; display:inline-block">${name}</span><span style="color:var(--dim-white); min-width:160px; display:inline-block">${role}</span><span class="${sc}">${status}</span>`, 't-output');
+        });
+        addBlank();
+        addLine('9 NODES FOUND. 8 ACTIVE. 1 LEGEND.', 't-warn');
+        addBlank();
+    },
+    albums: () => {
+        addLine('ACCESSING DISCOGRAPHY ARCHIVE...', 't-warn');
+        addBlank();
+        const albums = [
+            ['1999', 'SLIPKNOT', '2x Platinum', '6 TRACKS (SELF-TITLED)'],
+            ['2001', 'IOWA', 'Platinum', '5 TRACKS'],
+            ['2004', 'VOL. 3', 'Platinum', '5 TRACKS (GRAMMY WIN)'],
+            ['2008', 'ALL HOPE IS GONE', 'Platinum', '5 TRACKS'],
+            ['2014', '.5: THE GRAY CHAPTER', 'Gold', '5 TRACKS'],
+            ['2019', 'WE ARE NOT YOUR KIND', 'Silver', '5 TRACKS'],
+            ['2022', 'THE END, SO FAR', 'NEW', '5 TRACKS'],
+        ];
+        albums.forEach(([year, title, cert, notes]) => {
+            addLine(`  <span style="color:var(--dim-white); min-width:50px; display:inline-block">${year}</span>  <span style="color:var(--pure-red); min-width:260px; display:inline-block">${title}</span><span style="color:var(--dim-white);">${cert} — ${notes}</span>`, 't-output');
+        });
+        addBlank();
+        addLine('7 STUDIO ALBUMS. 30M+ COPIES SOLD WORLDWIDE.', 't-success');
+        addBlank();
+    },
+    whoami: () => {
+        addBlank();
+        addLine('RUNNING IDENTITY DIAGNOSTIC...', 't-warn');
+        addBlank();
+        addLine('  USER_CLASS    : MAGGOT', 't-output');
+        addLine('  ACCESS_LEVEL  : UNLIMITED', 't-output');
+        addLine('  ORIGIN        : THE PIT', 't-output');
+        addLine('  ALLEGIANCE    : SLIPKNOT [9]', 't-output');
+        addLine('  SANITY        : <span style="color:var(--pure-red)">NOT_FOUND</span>', 't-output');
+        addLine('  SOUL_SIGNATURE: ⛧ NONAGONAL ⛧', 't-output');
+        addLine('  CLEARANCE     : ALL AREAS', 't-success');
+        addBlank();
+        addLine('YOU ARE NOT YOUR KIND. YOU ARE OURS.', 't-error');
+        addBlank();
+    },
+    scan: (args) => {
+        if (args.includes('--members')) {
+            addLine('SCANNING MEMBER NODES...', 't-warn');
+            addLine('  [9/9] NODES DETECTED', 't-success');
+            addLine('  [8/9] NODES ACTIVE — 1 LEGEND NODE (OFFLINE)', 't-warn');
+            addLine('  MASK INTEGRITY: 100%', 't-success');
+        } else if (args.includes('--audio')) {
+            addLine('SCANNING AUDIO SYSTEMS...', 't-warn');
+            addLine('  DISTORTION LEVEL: MAX (OVERFLOW)', 't-error');
+            addLine('  BPM DETECTED: 110–180', 't-success');
+            addLine('  BASS FREQUENCY: STRUCTURAL RISK', 't-error');
+            addLine('  GUITAR RIFF COUNT: UNCOUNTABLE', 't-success');
+        } else {
+            addLine('INITIATING FULL SYSTEM SCAN...', 't-warn');
+            addBlank();
+            const checks = [
+                ['iowa_core.exe', 'RUNNING', 't-success'],
+                ['audio_ritual.sys', 'OVERLOADED', 't-warn'],
+                ['people_shit.dll', 'RUNNING', 't-success'],
+                ['sanity_check.exe', 'TERMINATED', 't-error'],
+                ['humanity.link', 'NOT FOUND', 't-error'],
+                ['knotfest_api', 'RUNNING', 't-success'],
+                ['mask_integrity', '100% OK', 't-success'],
+                ['crowd_energy', 'CRITICAL+', 't-error'],
+                ['maggot_daemon', 'RUNNING', 't-success'],
+            ];
+            checks.forEach(([proc, status, cls]) => {
+                addLine(`  [ <span class="${cls}">${status.padEnd(12)}</span> ]  ${proc}`, 't-output');
+            });
+            addBlank();
+            addLine('SCAN COMPLETE. 6/9 SYSTEMS NOMINAL. CHAOS LEVEL: OPTIMAL.', 't-warn');
+        }
+        addBlank();
+    },
+    play: (args) => {
+        const key = args.trim().toLowerCase();
+        const song = songsDB[key];
+        if (song) {
+            addLine(`LOADING TRACK: ${song.title}...`, 't-warn');
+            addBlank();
+            addLine(`  TITLE   : <span style="color:var(--pure-red)">${song.title}</span>`, 't-output');
+            addLine(`  ALBUM   : ${song.album}`, 't-output');
+            addLine(`  LENGTH  : ${song.duration}`, 't-output');
+            addLine('  STATUS  : <span style="color:#22cc55">NOW PLAYING</span>', 't-output');
+            addBlank();
+            addLine('  [▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶▶░░░░░░░░░░] 66%', 't-dim');
+            addBlank();
+            addLine(`  LYRICS  : "${song.lyric}"`, 't-dim');
+            addLine('  WARNING: DISTORTION LEVELS EXCEEDING SAFE THRESHOLDS.', 't-error');
+        } else {
+            addLine(`TRACK NOT FOUND: "${args}"`, 't-error');
+            addLine('TRY: sic, iowa, unsainted, duality, psychosocial, nero, wait, heretic, people, before, dead, thedevil', 't-dim');
+        }
+        addBlank();
+    },
+    knotfest: () => {
+        addLine('QUERYING KNOTFEST TOUR DATABASE...', 't-warn');
+        addBlank();
+        addLine('  ╔═══════════════════════════════════════╗', 't-dim');
+        addLine('  ║  KNOTFEST — 2026 SCHEDULE             ║', 't-warn');
+        addLine('  ╚═══════════════════════════════════════╝', 't-dim');
+        addBlank();
+        const dates = [
+            ['31 OCT 2026', 'DES MOINES, IA', 'STEREOCENTER ARENA', '94% SOLD'],
+            ['12 NOV 2026', 'LOS ANGELES, CA', 'KNOTFEST GROUNDS', 'ON SALE'],
+            ['19 NOV 2026', 'LONDON, UK', 'O2 ARENA', 'ON SALE'],
+            ['27 NOV 2026', 'BERLIN, DE', 'MERCEDES-BENZ ARENA', 'ON SALE'],
+            ['05 DEC 2026', 'TOKYO, JP', 'MAKUHARI MESSE', 'TBC'],
+        ];
+        dates.forEach(([date, city, venue, status]) => {
+            const sc = status === '94% SOLD' ? 't-error' : (status === 'TBC' ? 't-dim' : 't-success');
+            addLine(`  <span style="color:var(--pure-red); min-width:100px; display:inline-block">${date}</span>  <span style="color:#c8c0b8; min-width:160px; display:inline-block">${city}</span><span class="${sc}">[${status}]</span>`, 't-output');
+        });
+        addBlank();
+        addLine('VISIT knotfest.html FOR FULL DETAILS AND TICKETS.', 't-dim');
+        addBlank();
+    },
+    status: () => {
+        addLine('SYSTEM STATUS REPORT:', 't-warn');
+        addBlank();
+        addLine('  MAGGOT//OS v6.6.6  ──  NONAGON KERNEL', 't-error');
+        addBlank();
+        addLine('  BAND STATUS       : <span style="color:#22cc55">ACTIVE / ON TOUR</span>', 't-output');
+        addLine('  ALBUM STATUS      : <span style="color:#ff8800">IN PRODUCTION</span>', 't-output');
+        addLine('  MEMBER COUNT      : 9 (#1 LEGEND)', 't-output');
+        addLine('  IOWA_CORE         : <span style="color:#22cc55">RUNNING</span>', 't-output');
+        addLine('  SANITY RESERVE    : <span style="color:var(--pure-red)">0% — DEPLETED</span>', 't-output');
+        addLine('  CROWD CAPACITY    : EXCEEDED BY 300%', 't-output');
+        addLine('  LAST ALBUM        : THE END, SO FAR (2022)', 't-output');
+        addLine('  NEXT EVENT        : KNOTFEST 31.10.2026', 't-output');
+        addLine('  RECORDS SOLD      : 30,000,000+', 't-output');
+        addLine('  GRAMMY AWARDS     : 1 WIN / 3 NOMINATIONS', 't-output');
+        addBlank();
+        addLine('ALL SYSTEMS RED. MAGGOT PROTOCOL ACTIVE.', 't-error');
+        addBlank();
+    },
+    mask: (args) => {
+        const masks = {
+            '0': ['SID WILSON', '#0', 'GAS MASK / ROBOT HELMET', 'The ever-evolving turntablist. His masks have ranged from gas masks to full robot helmets.'],
+            '1': ['JOEY JORDISON', '#1', 'KABUKI / DEMON MASK', 'The fallen legend. His white demon mask became iconic. RIP 1975–2021.'],
+            '2': ['ALESSANDRO VENTURELLA', '#2', 'PROSTHETIC FACE MASK', 'V-Man. The bass destroyer. His prosthetic-style mask creates an unsettling hyper-real appearance.'],
+            '3': ['MICHAEL PFAFF', '#3', 'TORTILLA MAN MASK', 'The wildcard. His sombrero-and-mask combo is both absurd and terrifying.'],
+            '4': ['JAMES ROOT', '#4', 'JESTER / CLOWN MASK', 'Silent and towering. His jester mask evolved through eras — from full clown to sleek minimalism.'],
+            '5': ['CRAIG JONES', '#5', 'SPIKE MASK', 'The sample processor. His spike-covered mask is one of the most recognizable in metal history.'],
+            '6': ['SHAWN CRAHAN', '#6', 'CLOWN MASK', 'The Clown. The visionary. His rotting clown mask is the soul of Slipknot\'s aesthetic terror.'],
+            '7': ['MICK THOMSON', '#7', 'HOCKEY MASK / BLANK FACE', 'Seven. Pure riff machine. His blank mask reflects pure, expressionless aggression.'],
+            '8': ['COREY TAYLOR', '#8', 'EVOLVING HORROR MASKS', 'The voice of the nameless. From leather stitching to cracked porcelain to Venetian horror.'],
+        };
+        const num = args.replace('#','').trim();
+        const m = masks[num];
+        if (m) {
+            addLine(`MASK DATABASE — MEMBER ${args.trim().toUpperCase()}`, 't-warn');
+            addBlank();
+            addLine(`  NAME   : <span style="color:var(--pure-red)">${m[0]}</span>`, 't-output');
+            addLine(`  NUMBER : ${m[1]}`, 't-output');
+            addLine(`  MASK   : ${m[2]}`, 't-output');
+            addLine(`  NOTE   : <span style="color:var(--dim-white)">${m[3]}</span>`, 't-output');
+        } else {
+            addLine(`MASK NOT FOUND. USE: mask #0 through mask #8`, 't-error');
+        }
+        addBlank();
+    },
+    lyrics: (args) => {
+        const key = args.trim().toLowerCase();
+        const song = songsDB[key];
+        if (song) {
+            addBlank();
+            addLine(`  SONG: ${song.title}`, 't-warn');
+            addLine(`  <span style="color:var(--pure-red); font-style:italic;">"${song.lyric}"</span>`, 't-output');
+        } else {
+            addLine(`LYRIC NOT FOUND: "${args}"`, 't-error');
+            addLine('TRY: sic, iowa, duality, psychosocial, unsainted, people, wait, heretic', 't-dim');
+        }
+        addBlank();
+    },
+    top: () => {
+        addLine('PID   PROCESS              CPU%   MEM%   STATUS', 't-warn');
+        addLine('────  ───────────────────  ─────  ─────  ──────', 't-dim');
+        const procs = [
+            ['1995', 'iowa_core.exe', '34.2', '12.1', 'RUNNING'],
+            ['2001', 'people_shit.dll', '28.8', '8.4', 'RUNNING'],
+            ['2019', 'knotfest_api', '12.4', '5.7', 'RUNNING'],
+            ['0666', 'maggot_daemon', '9.1', '4.3', 'RUNNING'],
+            ['0001', 'audio_ritual.sys', '8.7', '22.3', 'OVERFLOW'],
+            ['0999', 'mask_scanner.bin', '4.3', '2.1', 'RUNNING'],
+            ['0000', 'sanity_check.exe', '0.0', '0.0', 'DEAD'],
+            ['6666', 'humanity.link', '0.0', '0.0', 'NOT FOUND'],
+        ];
+        procs.forEach(([pid, name, cpu, mem, status]) => {
+            const sc = status === 'RUNNING' ? 't-success' : (status === 'DEAD' || status === 'NOT FOUND' ? 't-error' : 't-warn');
+            addLine(`${pid}  ${name.padEnd(20)} ${cpu.padEnd(6)} ${mem.padEnd(6)} <span class="${sc}">${status}</span>`, 't-output');
+        });
+        addBlank();
+    },
+    date: () => {
+        const now = new Date();
+        addLine(`SYSTEM DATE  : ${now.toDateString().toUpperCase()}`, 't-output');
+        addLine(`SYSTEM TIME  : ${now.toTimeString().split(' ')[0]}`, 't-output');
+        addLine(`TIMEZONE     : ${Intl.DateTimeFormat().resolvedOptions().timeZone}`, 't-output');
+        addLine(`MAGGOT_EPOCH : YEAR ${now.getFullYear() - 1995} OF THE NONAGON`, 't-warn');
+        addBlank();
+    },
+    reboot: () => {
+        addLine('INITIATING REBOOT SEQUENCE...', 't-warn');
+        addLine('[1/4] Saving maggot state...', 't-dim');
+        setTimeout(() => addLine('[2/4] Flushing sanity buffers...', 't-dim'), 400);
+        setTimeout(() => addLine('[3/4] Clearing humanity residue...', 't-dim'), 800);
+        setTimeout(() => addLine('[4/4] Reinitializing chaos engine...', 't-dim'), 1200);
+        setTimeout(() => {
+            addBlank();
+            addLine('SYSTEM REBOOTED. ALL SYSTEMS RED.', 't-error');
+            addBlank();
+        }, 1800);
+    },
+    clear: () => { output.innerHTML = ''; },
+    cls: () => { output.innerHTML = ''; },
+    
+    // NEW COMMANDS
+    history: () => {
+        if (cmdHistory.length === 0) {
+            addLine('No commands in history.', 't-dim');
+        } else {
+            addLine('COMMAND HISTORY:', 't-warn');
+            cmdHistory.forEach((cmd, idx) => {
+                addLine(`  ${cmdHistory.length - idx}  ${cmd}`, 't-output');
+            });
+        }
+        addBlank();
+    },
+    echo: (args) => {
+        addLine(args || '', 't-output');
+        addBlank();
+    },
+    uname: () => {
+        addLine('MAGGOT//OS v6.6.6 (NONAGON KERNEL)', 't-success');
+        addLine('NODE: iowa-core', 't-output');
+        addLine('ARCH: x86_64 (CHAOS_AMD64)', 't-output');
+        addLine('SHELL: /bin/maggot_sh', 't-output');
+        addBlank();
+    },
+    neofetch: () => {
+        const ascii = `
+   ███╗   ███╗ █████╗  ██████╗  ██████╗  ██████╗ ████████╗
+   ████╗ ████║██╔══██╗██╔════╝ ██╔════╝ ██╔═══██╗╚══██╔══╝
+   ██╔████╔██║███████║██║  ███╗██║  ███╗██║   ██║   ██║   
+   ██║╚██╔╝██║██╔══██║██║   ██║██║   ██║██║   ██║   ██║   
+   ██║ ╚═╝ ██║██║  ██║╚██████╔╝╚██████╔╝╚██████╔╝   ██║   
+   ╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝    ╚═╝   
+        `;
+        addLine(ascii, 't-error');
+        addLine('USER: maggot@slipknot', 't-output');
+        addLine('OS: MAGGOT//OS v6.6.6', 't-output');
+        addLine('UPTIME: 25 years 4 months 12 days', 't-output');
+        addLine('PACKAGES: 9 (members)', 't-output');
+        addLine('SHELL: /bin/maggot_sh', 't-output');
+        addLine('THEME: Iowa Red', 't-output');
+        addBlank();
+    },
+    random: () => {
+        const keys = Object.keys(songsDB);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        const song = songsDB[randomKey];
+        addLine(`🎲 RANDOM TRACK SUGGESTION:`, 't-warn');
+        addLine(`  <span style="color:var(--pure-red)">${song.title}</span> — ${song.album} (${song.duration})`, 't-output');
+        addLine(`  LYRICS: "${song.lyric}"`, 't-dim');
+        addBlank();
+    },
+    fortune: () => {
+        const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+        addLine(`🔮 FORTUNE: ${randomFortune}`, 't-warn');
+        addBlank();
+    },
+    cowsay: (args) => {
+        const msg = args.trim() || 'MAGGOT FOREVER';
+        const metalCow = `
+  _________________________________
+ < ${msg} >
+  ---------------------------------
+        \\   ^__^
+         \\  (xx)\\_______
+            (__)\\       )\\/\\
+             U  ||----w |
+                ||     ||
+        `;
+        if (msg.toLowerCase().includes('slipknot')) {
+            addLine(`  _________________________________`, 't-error');
+            addLine(` < ${msg.toUpperCase()} >`, 't-error');
+            addLine(`  ---------------------------------`, 't-error');
+            addLine(`        \\   ,,__`, 't-error');
+            addLine(`         \\  (🔴🔴)\\_______`, 't-error');
+            addLine(`            (__)\\       )\\/\\`, 't-error');
+            addLine(`             🐏 ||----w |`, 't-error');
+            addLine(`                ||     ||`, 't-error');
+        } else {
+            addLine(metalCow, 't-dim');
+        }
+        addBlank();
+    },
+    album: (args) => {
+        const key = args.trim().toLowerCase();
+        const album = albumDetails[key];
+        if (album) {
+            addLine(`ALBUM DETAILS: ${args.toUpperCase()}`, 't-warn');
+            addLine(`  YEAR : ${album.year}`, 't-output');
+            addLine(`  CERT : ${album.cert}`, 't-output');
+            addLine(`  TRACKS:`, 't-output');
+            album.tracks.forEach((track, i) => {
+                addLine(`    ${i+1}. ${track}`, 't-dim');
+            });
+        } else {
+            addLine(`ALBUM NOT FOUND: "${args}"`, 't-error');
+            addLine('Available: slipknot, iowa, vol3, ahig, graychapter, wanyk, theend', 't-dim');
+        }
+        addBlank();
+    },
+    song: (args) => {
+        const key = args.trim().toLowerCase();
+        const song = songsDB[key];
+        if (song) {
+            addLine(`TRACK DETAILS: ${song.title}`, 't-warn');
+            addLine(`  ALBUM : ${song.album}`, 't-output');
+            addLine(`  DURATION : ${song.duration}`, 't-output');
+            addLine(`  LYRICS : "${song.lyric}"`, 't-dim');
+        } else {
+            addLine(`SONG NOT FOUND: "${args}"`, 't-error');
+            addLine('Try: sic, iowa, duality, psychosocial, unsainted, nero, wait, heretic, people, before, dead, thedevil', 't-dim');
+        }
+        addBlank();
+    },
+    countdown: () => {
+        const nextShow = new Date('October 31, 2026');
+        const now = new Date();
+        const diff = Math.ceil((nextShow - now) / (1000 * 60 * 60 * 24));
+        addLine(`⏳ NEXT RITUAL: KNOTFEST DES MOINES — 31 OCT 2026`, 't-warn');
+        addLine(`   ${diff} DAYS REMAINING`, diff > 0 ? 't-success' : 't-error');
+        addBlank();
+    },
+    weather: () => {
+        addLine(`🌩️ DES MOINES, IOWA — RITUAL WEATHER`, 't-warn');
+        addLine(`   TEMP: 41°C (CROD HEAT)`, 't-output');
+        addLine(`   CONDITION: MOSH PIT THUNDERSTORMS`, 't-output');
+        addLine(`   HUMIDITY: 98% (SWEAT AND BLOOD)`, 't-output');
+        addLine(`   WIND: 66 KNOTS FROM THE PIT`, 't-output');
+        addBlank();
+    },
+    ping: () => {
+        const latency = (Math.random() * 20 + 4).toFixed(1);
+        addLine(`PING maggot.net [69.66.66.69] with 32 bytes of data:`, 't-output');
+        addLine(`  Reply from 69.66.66.69: bytes=32 time=${latency}ms TTL=66`, 't-success');
+        addLine(`  Reply from 69.66.66.69: bytes=32 time=${(latency*0.9).toFixed(1)}ms TTL=66`, 't-success');
+        addLine(`  Reply from 69.66.66.69: bytes=32 time=${(latency*1.1).toFixed(1)}ms TTL=66`, 't-success');
+        addLine(`  Reply from 69.66.66.69: bytes=32 time=${(latency*0.95).toFixed(1)}ms TTL=66`, 't-success');
+        addBlank();
+    },
+    sl: () => {
+        const train = `
+   🚂💨💨💨
+   ═══════════════════════════════════
+   ||  S  L  I  P  K  N  O  T  ||
+   ═══════════════════════════════════
+        `;
+        addLine(train, 't-warn');
+        addLine('CHOO CHOO MAGGOT!', 't-error');
+        addBlank();
+    }
+};
+
+function executeCommand(raw) {
+    const trimmed = raw.trim();
+    if (!trimmed) return;
+
+    // Store in history
+    cmdHistory.unshift(trimmed);
+    if (cmdHistory.length > 50) cmdHistory.pop();
+    histIdx = -1;
+
+    addLine(`<span class="t-prompt">root@slipknot:~$</span> ${trimmed}`, 't-output');
+
+    const parts = trimmed.toLowerCase().split(/\s+/);
+    const cmd = parts[0];
+    const args = trimmed.slice(cmd.length).trim();
+
+    if (COMMANDS[cmd]) {
+        COMMANDS[cmd](args);
+    } else if (cmd === 'ls' || cmd === 'dir') {
+        addLine('iowa_core.exe  people_shit.dll  masks/  albums/  knotfest/  terminal.log', 't-output');
+        addBlank();
+    } else if (cmd === 'cat' && args) {
+        addLine(`${args}: BINARY FILE — USE APPROPRIATE MODULE`, 't-error');
+        addBlank();
+    } else if (trimmed === 'sudo rm -rf /') {
+        addLine('NICE TRY, MAGGOT. IOWA CANNOT BE DELETED.', 't-error');
+        addBlank();
+    } else {
+        addLine(`COMMAND NOT FOUND: "${trimmed}" — Type <span style="color:var(--pure-red)">help</span> for commands`, 't-error');
+        addBlank();
+    }
+}
+
+// Autocomplete simple
+const allCommands = Object.keys(COMMANDS);
+let currentSuggestion = '';
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        const current = input.value.trim().toLowerCase();
+        if (current.length > 0) {
+            const match = allCommands.find(cmd => cmd.startsWith(current));
+            if (match) {
+                input.value = match;
+            }
+        }
+    } else if (e.key === 'Enter') {
+        executeCommand(input.value);
+        input.value = '';
+        currentSuggestion = '';
+    } else if (e.key === 'ArrowUp') {
+        if (histIdx < cmdHistory.length - 1) { histIdx++; input.value = cmdHistory[histIdx]; }
+        e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+        if (histIdx > 0) { histIdx--; input.value = cmdHistory[histIdx]; }
+        else { histIdx = -1; input.value = ''; }
+        e.preventDefault();
+    }
+});
+
+// Ctrl+L clear
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'l') {
+        e.preventDefault();
+        COMMANDS.clear();
+    }
+});
+
+document.querySelector('.terminal-container').addEventListener('click', () => input.focus());
+input.focus();
+</script>
+</body>
+</html>

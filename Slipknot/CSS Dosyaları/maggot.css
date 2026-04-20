@@ -1,0 +1,346 @@
+/* MAGGOT//OS - SLIPKNOT UI SYSTEM */
+@import './fonts.css';
+
+:root {
+  /* %60 DOMINANT: SIYAH (Arka Plan ve Temel Yapı) */
+  --pitch-black: #000000;
+  --dark-bg: #050505;
+  --card-bg: #0f0f0f;
+
+  /* %30 SEKONDER: KIRMIZI (Sınırlar, Başlıklar, Vurgular) */
+  --pure-red: #ff0000;
+  --blood-red: #b30000;
+  --dried-blood: #660000;
+  --rust: #440000;
+  --terminal-green: #ff3333;
+
+  /* %10 VURGU: BEYAZ (Kritik Okunabilirlik) */
+  --grunge-white: #ffffff;
+  --dim-white: #cccccc;
+  --warning-amber: #eeeeee;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--grunge-white);
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* === NAVBAR === */
+.navbar {
+  background: rgba(0,0,0,0.95) !important;
+  border-bottom: 2px solid var(--blood-red);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 30px rgba(180,0,0,0.3);
+}
+
+.slipknot-brand {
+  font-family: 'Metal Mania', cursive;
+  color: var(--pure-red) !important;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(200,0,0,0.8), 0 0 40px rgba(200,0,0,0.4);
+  text-decoration: none;
+}
+
+/* === HEADER === */
+.header {
+  text-align: center;
+  padding: 60px 20px 40px;
+  position: relative;
+  border-bottom: 1px solid var(--dried-blood);
+}
+
+.header::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--pure-red), transparent);
+  margin-top: 30px;
+}
+
+/* === GLITCH EFFECT === */
+.glitch {
+  font-family: 'Metal Mania', cursive;
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: var(--grunge-white);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  position: relative;
+  text-shadow: 2px 0 var(--pure-red), -2px 0 #004488;
+  animation: glitch-main 4s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+
+.glitch::before {
+  color: var(--pure-red);
+  animation: glitch-top 4s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  opacity: 0.7;
+}
+
+.glitch::after {
+  color: #0044cc;
+  animation: glitch-bot 4s infinite;
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  opacity: 0.5;
+}
+
+@keyframes glitch-main {
+  0%, 90%, 100% { text-shadow: 2px 0 var(--pure-red), -2px 0 #004488; }
+  92% { text-shadow: -4px 0 var(--pure-red), 4px 0 #0088ff; }
+  95% { text-shadow: 4px 0 var(--pure-red), -4px 0 #004488; }
+}
+
+@keyframes glitch-top {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-3px, -1px); }
+  95% { transform: translate(3px, 1px); }
+}
+
+@keyframes glitch-bot {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(3px, 1px); }
+  95% { transform: translate(-3px, -1px); }
+}
+
+.subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  color: var(--dim-white);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+/* === CARDS === */
+.member-card {
+  background: var(--card-bg);
+  border: 1px solid var(--dried-blood);
+  border-top: 3px solid var(--blood-red);
+  overflow: hidden;
+  transition: all 0.3s;
+  height: 100%;
+  position: relative;
+}
+
+.member-card:hover {
+  border-top-color: var(--pure-red);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(150,0,0,0.25);
+}
+
+.member-card.rip {
+  border-top-color: #444;
+  opacity: 0.85;
+}
+
+.member-card.rip:hover {
+  border-top-color: #666;
+}
+
+.img-wrap {
+  height: 220px;
+  background: var(--pitch-black);
+  overflow: hidden;
+  position: relative;
+}
+
+.img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: grayscale(70%) contrast(1.2);
+  transition: filter 0.4s;
+}
+
+.member-card:hover .img-wrap img {
+  filter: grayscale(20%) contrast(1.1);
+}
+
+.img-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 20px 14px 8px;
+}
+
+.member-num-big {
+  font-family: 'Metal Mania', cursive;
+  font-size: 2rem;
+  color: var(--pure-red);
+  text-shadow: 0 0 20px rgba(200,0,0,0.6);
+}
+
+.member-body {
+  padding: 16px;
+}
+
+.member-name {
+  font-family: 'Oswald';
+  font-weight: 700;
+  color: var(--grunge-white);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.member-role {
+  font-size: 0.65rem;
+  color: var(--dim-white);
+  font-family: 'Oswald';
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+.member-desc {
+  font-size: 0.72rem;
+  color: var(--dim-white);
+  line-height: 1.6;
+  margin: 10px 0;
+  border-left: 2px solid var(--dried-blood);
+  padding-left: 10px;
+}
+
+.mask-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-family: 'Oswald';
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border: 1px solid var(--dried-blood);
+  color: var(--dim-white);
+  margin-bottom: 10px;
+}
+
+/* === BUTTONS === */
+.btn-brutal {
+  background: transparent;
+  border: 2px solid var(--pure-red);
+  color: var(--pure-red);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-brutal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: var(--pure-red);
+  transition: left 0.2s;
+  z-index: -1;
+}
+
+.btn-brutal:hover {
+  color: #000;
+  text-shadow: none;
+}
+
+.btn-brutal:hover::before {
+  left: 0;
+}
+
+/* === BARBED DIVIDER === */
+.barbed-divider {
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--dried-blood) 0px,
+    var(--dried-blood) 8px,
+    transparent 8px,
+    transparent 14px
+  );
+  margin: 16px 0;
+}
+
+/* === STATUS INDICATORS === */
+.stat-badge {
+  display: inline-block;
+  background: rgba(140,0,0,0.2);
+  border: 1px solid var(--blood-red);
+  color: var(--pure-red);
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  text-transform: uppercase;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--pitch-black); }
+::-webkit-scrollbar-thumb { background: var(--blood-red); }
+::-webkit-scrollbar-thumb:hover { background: var(--pure-red); }
+
+/* === SCAN LINE ANIMATION === */
+@keyframes scanline {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+.scanline-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, rgba(200,0,0,0.03), transparent);
+  animation: scanline 6s linear infinite;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* === FOOTER === */
+.footer {
+  background: var(--pitch-black);
+  border-top: 2px solid var(--blood-red);
+  padding: 30px;
+  color: var(--dim-white);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 3px;
+  font-size: 0.75rem;
+  text-align: center;
+  margin-top: 60px;
+}

@@ -1,0 +1,365 @@
+/* MAGGOT//OS - SLIPKNOT UI SYSTEM */
+/* MAGGOT//OS - SLIPKNOT UI SYSTEM */
+:root {
+  /* %60 DOMINANT: SIYAH (Arka Plan ve Temel Yapı) */
+  --pitch-black: #000000;
+  --dark-bg: #050505;
+  --card-bg: #0f0f0f;
+
+  /* %30 SEKONDER: KIRMIZI (Sınırlar, Başlıklar, Vurgular) */
+  --pure-red: #ff0000;
+  --blood-red: #b30000;
+  --dried-blood: #660000;
+  --rust: #440000;
+  --terminal-green: #ff3333; /* Hata/Sistem renkleri artık kırmızı tonlarında */
+
+  /* %10 VURGU: BEYAZ (Kritik Okunabilirlik) */
+  --grunge-white: #ffffff;
+  --dim-white: #cccccc;
+  --warning-amber: #eeeeee; /* Uyarılar artık beyaz/gri tonlarında */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--grunge-white);
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* === NAVBAR === */
+.navbar {
+  background: rgba(0,0,0,0.95) !important;
+  border-bottom: 2px solid var(--blood-red);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 30px rgba(180,0,0,0.3);
+}
+
+.slipknot-brand {
+  font-family: 'Metal Mania', cursive;
+  color: var(--pure-red) !important;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(200,0,0,0.8), 0 0 40px rgba(200,0,0,0.4);
+  text-decoration: none;
+}
+
+.slipknot-nav .nav-link {
+  color: var(--dim-white) !important;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 8px 16px !important;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.slipknot-nav .nav-link:hover {
+  color: var(--pure-red) !important;
+  border: 1px solid var(--blood-red);
+  background: rgba(140,0,0,0.15);
+  text-shadow: 0 0 10px var(--pure-red);
+}
+
+/* === HEADER === */
+.header {
+  text-align: center;
+  padding: 60px 20px 40px;
+  position: relative;
+  border-bottom: 1px solid var(--dried-blood);
+}
+
+.header::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--pure-red), transparent);
+  margin-top: 30px;
+}
+
+/* === GLITCH EFFECT === */
+.glitch {
+  font-family: 'Metal Mania', cursive;
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: var(--grunge-white);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  position: relative;
+  text-shadow: 2px 0 var(--pure-red), -2px 0 #004488;
+  animation: glitch-main 4s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+
+.glitch::before {
+  color: var(--pure-red);
+  animation: glitch-top 4s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  opacity: 0.7;
+}
+
+.glitch::after {
+  color: #0044cc;
+  animation: glitch-bot 4s infinite;
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  opacity: 0.5;
+}
+
+@keyframes glitch-main {
+  0%, 90%, 100% { text-shadow: 2px 0 var(--pure-red), -2px 0 #004488; }
+  92% { text-shadow: -4px 0 var(--pure-red), 4px 0 #0088ff; }
+  95% { text-shadow: 4px 0 var(--pure-red), -4px 0 #004488; }
+}
+
+@keyframes glitch-top {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-3px, -1px); }
+  95% { transform: translate(3px, 1px); }
+}
+
+@keyframes glitch-bot {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(3px, 1px); }
+  95% { transform: translate(-3px, -1px); }
+}
+
+.subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  color: var(--dim-white);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+/* === CARDS === */
+.card-brutal {
+  background: var(--card-bg);
+  border: 1px solid var(--dried-blood);
+  border-top: 3px solid var(--blood-red);
+  padding: 24px;
+  position: relative;
+  transition: all 0.25s;
+  overflow: hidden;
+}
+
+.card-brutal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(180,0,0,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.card-brutal:hover {
+  border-color: var(--blood-red);
+  box-shadow: 0 0 25px rgba(150,0,0,0.25), inset 0 0 20px rgba(100,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.card-brutal h5 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  color: var(--grunge-white);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+/* === BUTTONS === */
+.btn-brutal {
+  background: transparent;
+  border: 2px solid var(--pure-red);
+  color: var(--pure-red);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-brutal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: var(--pure-red);
+  transition: left 0.2s;
+  z-index: -1;
+}
+
+.btn-brutal:hover {
+  color: #000;
+  text-shadow: none;
+}
+
+.btn-brutal:hover::before {
+  left: 0;
+}
+
+/* === BARBED DIVIDER === */
+.barbed-divider {
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--dried-blood) 0px,
+    var(--dried-blood) 8px,
+    transparent 8px,
+    transparent 14px
+  );
+  margin: 16px 0;
+}
+
+/* === STATUS INDICATORS === */
+.status-ok { color: #22cc55; }
+.status-warn { color: var(--warning-amber); }
+.status-crit { color: var(--pure-red); }
+.status-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: pulse-dot 2s infinite;
+}
+.dot-green { background: #22cc55; box-shadow: 0 0 6px #22cc55; }
+.dot-red { background: var(--pure-red); box-shadow: 0 0 6px var(--pure-red); }
+.dot-amber { background: var(--warning-amber); box-shadow: 0 0 6px var(--warning-amber); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* === CONTENT AREA === */
+.content {
+  padding: 40px 0 60px;
+}
+
+/* === FOOTER === */
+.footer {
+  background: var(--pitch-black);
+  border-top: 2px solid var(--blood-red);
+  padding: 30px;
+  color: var(--dim-white);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 3px;
+  font-size: 0.75rem;
+}
+
+/* === MEMBER IMAGE === */
+.member-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: grayscale(60%) contrast(1.2);
+  transition: filter 0.3s;
+}
+
+.card-brutal:hover .member-img {
+  filter: grayscale(0%) contrast(1.1);
+}
+
+/* === STAT BADGE === */
+.stat-badge {
+  display: inline-block;
+  background: rgba(140,0,0,0.2);
+  border: 1px solid var(--blood-red);
+  color: var(--pure-red);
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  text-transform: uppercase;
+}
+
+/* === NUMBER DISPLAY === */
+.data-number {
+  font-family: 'Metal Mania', cursive;
+  font-size: 2.5rem;
+  color: var(--pure-red);
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(200,0,0,0.5);
+}
+
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--pitch-black); }
+::-webkit-scrollbar-thumb { background: var(--blood-red); }
+::-webkit-scrollbar-thumb:hover { background: var(--pure-red); }
+
+/* === SCAN LINE ANIMATION === */
+@keyframes scanline {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+.scanline-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, rgba(200,0,0,0.03), transparent);
+  animation: scanline 6s linear infinite;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* === PROGRESS BAR === */
+.progress-brutal {
+  height: 6px;
+  background: var(--dried-blood);
+  margin: 8px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-brutal .fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blood-red), var(--pure-red));
+  transition: width 1.5s ease;
+  position: relative;
+}
+
+.progress-brutal .fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 4px; height: 100%;
+  background: #fff;
+  opacity: 0.6;
+  filter: blur(1px);
+}

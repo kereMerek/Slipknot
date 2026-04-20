@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <link rel="icon" type="image/jpeg" href="../Resimler/site-icon.jpg">
+    <meta charset="UTF-8">
+    <title>SOUND_TRACKS — DISCOGRAPHY</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Oswald:wght@700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS Dosyaları/u1.css">
+    <style>
+    body { background-color: #000; color: #fff; overflow-x: hidden; cursor: crosshair; }
+
+    /* NAVBAR FIX */
+    .slipknot-nav .nav-link {
+        color: var(--dim-white) !important;
+        font-family: 'Oswald', sans-serif !important;
+        font-weight: 700 !important;
+        letter-spacing: 2px !important;
+        font-size: 0.75rem !important;
+        padding: 8px 16px !important;
+        transition: all 0.2s !important;
+        border: 1px solid transparent !important;
+    }
+    .slipknot-nav .nav-link:hover {
+        color: var(--pure-red) !important;
+        border: 1px solid var(--blood-red) !important;
+        background: rgba(140,0,0,0.15) !important;
+    }
+
+    .album-card:hover .album-title {
+        transform: translateX(10px);
+        color: var(--pure-red) !important;
+    }
+
+    /* ANA KONTEYNER */
+    #albumContainer {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* ALBÜM KARTI */
+    .album-card {
+        width: 100%;
+        margin-bottom: 25px;
+        border: 1px solid var(--rust);
+        background: rgba(10, 10, 10, 0.95);
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    .album-card:hover {
+        border-color: var(--pure-red);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+    }
+
+    /* FOTOĞRAF VE EFEKT GRUBU (Beraber büyümeyi sağlayan kısım) */
+    .album-cover-container {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        overflow: hidden; /* Taşmayı engeller */
+        border-right: 1px solid var(--dried-blood);
+    }
+
+    .album-cover-container img, 
+    .album-effect-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), filter 0.6s;
+    }
+
+    /* Tarama çizgileri ve gölge efekti */
+    .album-effect-overlay {
+        background: 
+            repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 2px),
+            linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    /* Fare üstüne gelince beraber büyüme */
+    .album-card:hover .album-cover-container img,
+    .album-card:hover .album-effect-overlay {
+        transform: scale(1.1);
+    }
+
+    .album-card:hover .album-img, 
+    .album-card:hover .scanline-layer {
+        transform: scale(1.1); /* Resim ve efekt aynı anda büyür */
+    }
+
+    .album-card:hover .album-cover-container img {
+        filter: grayscale(0%) contrast(110%);
+    }
+
+    /* BİLGİ ALANI */
+    .album-info {
+        background-image: 
+            linear-gradient(rgba(255, 0, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 0, 0, 0.03) 1px, transparent 1px);
+        background-size: 20px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .album-year {
+        font-family: 'Metal Mania', cursive;
+        font-size: 2.5rem;
+        color: var(--pure-red);
+        line-height: 1;
+    }
+
+    .album-title {
+        font-family: 'Oswald', sans-serif;
+        font-weight: 700;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        text-shadow: 2px 2px 0px var(--dried-blood);
+        margin: 10px 0;
+        transition: 0.3s;
+    }
+
+    .album-card:hover .album-title {
+        transform: translateX(10px);
+        color: var(--pure-red);
+    }
+
+    /* ŞARKI LİSTESİ */
+    .track-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 15px;
+        border-top: 1px solid var(--dried-blood);
+        padding-top: 15px;
+    }
+
+    .track-item {
+        font-family: 'Courier New', monospace;
+        font-size: 0.7rem;
+        color: var(--dim-white);
+        border-left: 2px solid var(--rust);
+        padding-left: 8px;
+        transition: 0.2s;
+    }
+
+    .track-item:hover {
+        color: #fff;
+        border-left-color: var(--pure-red);
+        background: rgba(255, 0, 0, 0.05);
+    }
+
+    .stats-panel {
+        display: flex;
+        gap: 25px;
+        margin-top: 10px;
+    }
+
+    .stat-box {
+        font-family: 'Oswald', sans-serif;
+    }
+
+    .stat-label {
+        display: block;
+        font-size: 0.6rem;
+        color: var(--rust);
+        letter-spacing: 1px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+        color: #fff;
+    }
+</style>
+</head>
+<body>
+<div class="scanline-overlay"></div>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand slipknot-brand" href="index.html">MAGGOT//OS [9]</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ms-auto slipknot-nav">
+                <li class="nav-item"><a class="nav-link" href="system.html">IOWA_SYSTEM</a></li>
+                <li class="nav-item"><a class="nav-link" href="mask.html">MASKS</a></li>
+                <li class="nav-item"><a class="nav-link active" href="discograpy.html">DISCOGRAPHY</a></li>
+                <li class="nav-item"><a class="nav-link" href="terminal.html">TERMINAL</a></li>
+                <li class="nav-item"><a class="nav-link" href="knotfest.html">KNOTFEST</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <p class="subtitle mb-2" style="font-size:0.65rem; letter-spacing:6px; color:var(--blood-red);">// AUDIO ARCHIVE — 7 STUDIO ALBUMS //</p>
+    <h1 class="glitch" data-text="SOUND_TRACKS">SOUND_TRACKS</h1>
+    <p class="subtitle mt-2">30,000,000+ RECORDS SOLD — 1 GRAMMY AWARD</p>
+</div>
+
+<div class="content container">
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number">7</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">STUDIO ALBUMS</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number" style="font-size:2rem;">30M+</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">RECORDS SOLD</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number">1</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">GRAMMY WIN</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number">4</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">#1 BILLBOARDS</div>
+            </div>
+        </div>
+    </div>
+
+    <p style="font-size:0.72rem; color:var(--dim-white); font-family:'Oswald'; letter-spacing:2px; margin-bottom:20px;">
+        CLICK AN ALBUM TO EXPAND TRACKLIST ▼
+    </p>
+
+    <!-- Albums -->
+    <div id="albumContainer"></div>
+
+</div>
+
+<div class="footer text-center">
+    <div class="barbed-divider"></div>
+    <p class="mb-1">NONAGON // ⛧ // MAGGOT CORE SYSTEM // EST. 1995</p>
+    <small style="color:var(--dried-blood);">IF YOU'RE 555 THEN I'M 666</small>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+const imgPath = "../Resimler/Albümler/"; 
+
+const container = document.getElementById('albumContainer');
+container.innerHTML = ''; 
+
+// Verdiğin albüm yapısı (HİÇ DOKUNULMADI)
+const albums = [
+    {
+        year: "1999",
+        title: "SLIPKNOT",
+        img: "slipknot1..jpg",
+        cert: "2X PLATINUM",
+        billboard: "#51",
+        sold: "2,000,000+",
+        grammy: "NOMINATED",
+        tracks: ["742617000027", "(sic)", "Eyeless", "Wait and Bleed", "Surfacing", "Spit It Out"]
+    },
+    {
+        year: "2001",
+        title: "IOWA",
+        img: "slipknot2..jpg",
+        cert: "PLATINUM",
+        billboard: "#3",
+        sold: "1,200,000+",
+        grammy: "NOMINATED",
+        tracks: ["(515)", "People = Shit", "Disasterpiece", "My Plague", "The Heretic Anthem"]
+    },
+    {
+        year: "2004",
+        title: "VOL. 3: (THE SUBLIMINAL VERSES)",
+        img: "slipknot3..jpg",
+        cert: "PLATINUM",
+        billboard: "#2",
+        sold: "1,000,000+",
+        grammy: "WINNER",
+        tracks: ["Prelude 3.0", "The Blister Exists", "Duality", "Before I Forget", "Vermilion"]
+    },
+    {
+        year: "2008",
+        title: "ALL HOPE IS GONE",
+        img: "slipknot4..jpg",
+        cert: "PLATINUM",
+        billboard: "#1",
+        sold: "1,100,000+",
+        grammy: "NOMINATED",
+        tracks: ["Execute", "Gematria", "Sulfur", "Psychosocial", "Dead Memories"]
+    },
+    {
+        year: "2014",
+        title: ".5: THE GRAY CHAPTER",
+        img: "slipknot5..jpg",
+        cert: "GOLD",
+        billboard: "#1",
+        sold: "500,000+",
+        grammy: "NOMINATED",
+        tracks: ["XIX", "Sarcastrophe", "AOV", "The Devil in I", "Killpop"]
+    },
+    {
+        year: "2019",
+        title: "WE ARE NOT YOUR KIND",
+        img: "slipknot6..jpg",
+        cert: "SILVER",
+        billboard: "#1",
+        sold: "350,000+",
+        grammy: "NOMINATED",
+        tracks: ["Insert Coin", "Unsainted", "Birth of the Cruel", "Nero Forte", "Critical Darling"]
+    },
+    {
+        year: "2022",
+        title: "THE END, SO FAR",
+        img: "slipknot7.jpg",
+        cert: "NEW",
+        billboard: "#2",
+        sold: "150,000+",
+        grammy: "-",
+        tracks: ["Adderall", "The Dying Song", "The Chapeltown Rag", "Yen", "Hive Mind"]
+    }
+];
+
+// Tasarım ve Döngü
+albums.forEach((a) => {
+    const div = document.createElement('div');
+    div.className = 'album-card';
+    const src = imgPath + a.img;
+
+    div.innerHTML = `
+        <div class="row g-0"> 
+            <div class="col-auto">
+                <div class="album-cover-wrap" style="width: 300px; height: 300px; position: relative; overflow: hidden;">
+                    
+                    <img src="${src}" 
+                         class="album-img"
+                         style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%) contrast(120%); transition: transform 0.5s ease;"
+                         onerror="this.parentElement.innerHTML='<div style=\'color:red; padding:120px 0; text-align:center; font-family:Oswald;\'>[MISSING_DATA]</div>'">
+                    
+                    <div class="scanline-layer" style="position:absolute; top:0; left:0; width:100%; height:100%; background: repeating-linear-gradient(transparent, transparent 2px, rgba(0,0,0,0.3) 3px); pointer-events:none; transition: transform 0.5s ease; z-index: 2;"></div>
+                    
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); z-index: 1;"></div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="album-info p-4 h-100 d-flex flex-column justify-content-between" style="border-left: 1px solid var(--dried-blood);">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="album-year" style="font-family:'Metal Mania'; color:var(--pure-red); font-size: 2.5rem;">${a.year}</span>
+                            <span style="font-family:'Courier New'; color:var(--rust); font-size:0.7rem;">DECRYPTED_FILE_v1.0</span>
+                        </div>
+                        <h2 class="album-title" style="font-family:'Oswald'; font-weight:700; color:#fff; font-size:2rem; letter-spacing:3px; margin-top:-10px; transition: 0.3s;">${a.title}</h2>
+                        
+                        <div class="stats-panel d-flex gap-4 mt-3" style="border-top: 1px solid var(--dried-blood); padding-top: 15px;">
+                            <div class="stat-unit">
+                                <small style="color:var(--dim-white); font-size:0.6rem; display:block;">RANKING</small>
+                                <span style="color:var(--pure-red); font-family:'Oswald'; font-size:1.2rem;">${a.billboard}</span>
+                            </div>
+                            <div class="stat-unit">
+                                <small style="color:var(--dim-white); font-size:0.6rem; display:block;">CERTIFICATE</small>
+                                <span style="color:var(--warning-amber); font-family:'Oswald'; font-size:1.2rem;">${a.cert}</span>
+                            </div>
+                            <div class="stat-unit">
+                                <small style="color:var(--dim-white); font-size:0.6rem; display:block;">SALES_VOLUME</small>
+                                <span style="color:#fff; font-family:'Oswald'; font-size:1.2rem;">${a.sold}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="track-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px;">
+                        ${a.tracks.map(t => `<div style="font-family:'Courier New'; font-size:0.7rem; color:var(--dim-white); border-left: 2px solid var(--rust); padding-left: 8px;">${t}</div>`).join('')}
+                    </div>
+
+                    <div class="footer-code" style="margin-top: 15px; font-size: 0.5rem; color: var(--rust); font-family: monospace;">
+                        AUTHENTICATED_BY: ROADRUNNER_RECORDS // DATA_STREAM: ${Math.random().toString(16).toUpperCase().slice(2,10)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    container.appendChild(div);
+});
+
+function toggleAlbum(i) {
+    const el = document.getElementById('details-' + i);
+    el.classList.toggle('open');
+}
+</script>
+</body>
+</html>

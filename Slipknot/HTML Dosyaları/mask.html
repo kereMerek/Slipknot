@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <link rel="icon" type="image/jpeg" href="../Resimler/site-icon.jpg">
+    <meta charset="UTF-8">
+    <title>THE_MASKS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Oswald:wght@700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS Dosyaları/u1.css">
+    <style>
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid var(--dried-blood);
+            border-top: 3px solid var(--blood-red);
+            overflow: hidden;
+            transition: all 0.3s;
+            height: 100%;
+            position: relative;
+        }
+        .member-card:hover { border-top-color: var(--pure-red); transform: translateY(-4px); box-shadow: 0 10px 40px rgba(150,0,0,0.25); }
+        .member-card.rip { border-top-color: #444; opacity: 0.85; }
+        .member-card.rip:hover { border-top-color: #666; }
+        .img-wrap { height: 220px; background: var(--pitch-black); overflow: hidden; position: relative; }
+        .img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: grayscale(70%) contrast(1.2); transition: filter 0.4s; }
+        .member-card:hover .img-wrap img { filter: grayscale(20%) contrast(1.1); }
+        .img-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.85)); padding: 20px 14px 8px; }
+        .member-num-big { font-family: 'Metal Mania', cursive; font-size: 2rem; color: var(--pure-red); text-shadow: 0 0 20px rgba(200,0,0,0.6); }
+        .member-body { padding: 16px; }
+        .member-name { font-family: 'Oswald'; font-weight: 700; color: var(--grunge-white); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
+        .member-role { font-size: 0.65rem; color: var(--dim-white); font-family: 'Oswald'; letter-spacing: 2px; margin-top: 2px; }
+        .member-desc { font-size: 0.72rem; color: var(--dim-white); line-height: 1.6; margin: 10px 0; border-left: 2px solid var(--dried-blood); padding-left: 10px; }
+        .mask-tag { display: inline-block; font-size: 0.6rem; font-family: 'Oswald'; letter-spacing: 1px; padding: 2px 8px; border: 1px solid var(--dried-blood); color: var(--dim-white); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="scanline-overlay"></div>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand slipknot-brand" href="index.html">MAGGOT//OS [9]</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ms-auto slipknot-nav">
+                <li class="nav-item"><a class="nav-link" href="system.html">IOWA_SYSTEM</a></li>
+                <li class="nav-item"><a class="nav-link active" href="mask.html">MASKS</a></li>
+                <li class="nav-item"><a class="nav-link" href="discograpy.html">DISCOGRAPHY</a></li>
+                <li class="nav-item"><a class="nav-link" href="terminal.html">TERMINAL</a></li>
+                <li class="nav-item"><a class="nav-link" href="knotfest.html">KNOTFEST</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <p class="subtitle mb-2" style="font-size:0.65rem; letter-spacing:6px; color:var(--blood-red);">// 9 MEMBERS — 9 IDENTITIES — ONE ENTITY //</p>
+    <h1 class="glitch" data-text="THE_MASKS">THE_MASKS</h1>
+    <p class="subtitle mt-2">BEHIND THE MASK — MASK_SCANNER v2.0 — 9/9 VERIFIED</p>
+</div>
+
+<div class="content container">
+    <div class="row g-4" id="maskGrid">
+        <!-- Injected by JS -->
+    </div>
+</div>
+
+<div class="footer text-center">
+    <div class="barbed-divider"></div>
+    <p class="mb-1">NONAGON // ⛧ // MAGGOT CORE SYSTEM // EST. 1995</p>
+    <small style="color:var(--dried-blood);">IF YOU'RE 555 THEN I'M 666</small>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const members = [
+    {
+        id: '0', // ID eklendi
+        num: '#0', name: 'SID WILSON', role: 'TURNTABLES / DJ',
+        mask: 'GAS MASK / ROBOT HELMET',
+        desc: 'The ever-evolving chaos machine. Sid\'s masks have ranged from gas masks to full robot helmets — each era a different signal from a mind operating outside the spectrum.',
+        img: '../Resimler/SID WILSON.jpg',
+        status: 'ACTIVE', joined: '1995',
+        rip: false
+    },
+    {
+        id: '1', // ID eklendi
+        num: '#1', name: 'JOEY JORDISON', role: 'DRUMS [1975 — 2021]',
+        mask: 'KABUKI / WHITE DEMON MASK',
+        desc: 'The godfather of metal drumming. His white demon mask became one of the most iconic images in heavy music. Legends never die — #1 lives forever in every beat.',
+        img: '../Resimler/joey-jordison.jpg',
+        status: 'R.I.P.', joined: '1995',
+        rip: true
+    },
+    {
+        id: '2', // ID eklendi
+        num: '#2', name: 'ALESSANDRO VENTURELLA', role: 'BASS GUITAR',
+        mask: 'PROSTHETIC FACE MASK',
+        desc: 'V-Man. The low-end destroyer. His hyper-realistic prosthetic-style mask creates an unsettling presence. The bass is felt before it is heard.',
+        img: '../Resimler/ALESSANDRO VENTURELLA.jpg',
+        status: 'ACTIVE', joined: '2014',
+        rip: false
+    },
+    {
+        id: '3', // ID eklendi
+        num: '#3', name: 'MICHAEL PFAFF', role: 'CUSTOM PERCUSSION',
+        mask: 'TORTILLA MAN SOMBRERO MASK',
+        desc: 'The wildcard. Tortilla Man. His absurdist sombrero-and-face-mask combination defies logic while delivering percussive anarchy that fills every gap in the sonic wall.',
+        img: '../Resimler/MICHAEL PFAFF.webp',
+        status: 'ACTIVE', joined: '2019',
+        rip: false
+    },
+    {
+        id: '4', // ID eklendi
+        num: '#4', name: 'JAMES ROOT', role: 'GUITAR',
+        mask: 'JESTER / MINIMALIST MASK',
+        desc: 'Silent and towering. Jim Root\'s masks evolved from full jester clown to sleek, featureless minimalism. His guitar tone is as massive as his 6\'6" frame.',
+        img: '../Resimler/JAMES ROOT.jpg',
+        status: 'ACTIVE', joined: '1995',
+        rip: false
+    },
+    {
+        id: '5', // ID eklendi
+        num: '#5', name: 'CRAIG JONES', role: 'SAMPLER / KEYBOARD',
+        mask: 'SPIKE MASK',
+        desc: '133 MHz of pure data corruption. The spike mask is among the most recognizable in metal. Craig shapes the sonic landscape from the shadows — rarely seen, always felt.',
+        img: '../Resimler/CRAIG JONES.jpg',
+        status: 'ACTIVE', joined: '1995',
+        rip: false
+    },
+    {
+        id: '6', // ID eklendi
+        num: '#6', name: 'SHAWN "CLOWN" CRAHAN', role: 'PERCUSSION / CO-FOUNDER',
+        mask: 'THE CLOWN MASK',
+        desc: 'The Clown. The visionary. The soul of Slipknot\'s aesthetic terror. Knotfest founder. His rotting clown mask is the face that started everything — and it still haunts.',
+        img: '../Resimler/SHAWN CLOWN CRAHAN.jpg',
+        status: 'ACTIVE', joined: '1995',
+        rip: false
+    },
+    {
+        id: '7', // ID eklendi
+        num: '#7', name: 'MICK THOMSON', role: 'GUITAR',
+        mask: 'HOCKEY MASK / BLANK FACE',
+        desc: 'Seven. The silent riff machine. His expressionless blank mask mirrors his stage presence — an immovable force of pure, unfiltered guitar brutality.',
+        img: '../Resimler/MICK THOMSON.jpg', // Görsel yolu düzeltildi (Michael Pfaff yazıyordu)
+        status: 'ACTIVE', joined: '1995',
+        rip: false
+    },
+    {
+        id: '8', // ID eklendi
+        num: '#8', name: 'COREY TAYLOR', role: 'VOCALS',
+        mask: 'EVOLVING HORROR MASKS',
+        desc: 'The Voice of the Nameless. From stitched leather to cracked porcelain to Venetian horror — every album brought a new mask, each one more disturbing than the last.',
+        img: '../Resimler/COREY TAYLOR.jpg',
+        status: 'ACTIVE', joined: '1995',
+        rip: false
+    },
+];
+
+const grid = document.getElementById('maskGrid');
+members.forEach(m => {
+    const statusColor = m.rip ? '#666' : '#22cc55';
+    const btnText = m.rip ? 'REST IN PRIDE' : 'VIEW DETAILS';
+    const col = document.createElement('div');
+    col.className = 'col-md-4 col-sm-6 mb-4'; // Alt boşluk için mb-4 eklendi
+    col.innerHTML = `
+        <div class="member-card${m.rip ? ' rip' : ''}">
+            <div class="img-wrap">
+                <img src="${m.img}" alt="${m.name}" onerror="this.src='https://via.placeholder.com/300x250/050000/440000?text=${encodeURIComponent(m.num)}'">
+                <div class="img-overlay">
+                    <div class="member-num-big">${m.num}</div>
+                </div>
+            </div>
+            <div class="member-body d-flex flex-column" style="height: 320px;"> <div class="mask-tag">⊞ ${m.mask}</div>
+                <div class="member-name">${m.name}</div>
+                <div class="member-role">${m.role}</div>
+                <p class="member-desc">${m.desc}</p>
+                <div class="mt-auto"> <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div style="font-size:0.62rem; font-family:'Oswald'; color:var(--dim-white); letter-spacing:2px;">
+                            SINCE ${m.joined}
+                        </div>
+                        <div class="stat-badge" style="color:${statusColor}; border-color:${statusColor};">${m.status}</div>
+                    </div>
+                    <button class="btn-brutal w-100" onclick="window.location.href='member-detail.html?id=${m.id}'">${btnText}</button>
+                </div>
+            </div>
+        </div>
+    `;
+    grid.appendChild(col);
+});
+</script>
+</body>
+</html>

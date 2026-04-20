@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<link rel="icon" type="image/jpeg" href="../Resimler/site-icon.jpg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAGGOT // OS - Slipknot UI</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Special+Elite&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../CSS Dosyaları/u1.css">
+<style>
+.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--dried-blood); border: 1px solid var(--dried-blood); margin: 30px 0; }
+.hero-stat { background: var(--card-bg); padding: 20px 14px; text-align: center; }
+.hero-stat .label { font-family: 'Oswald', sans-serif; font-size: 0.6rem; letter-spacing: 3px; color: var(--dim-white); text-transform: uppercase; margin-bottom: 8px; }
+.ticker-bar { background: var(--pitch-black); border-top: 1px solid var(--dried-blood); border-bottom: 1px solid var(--dried-blood); overflow: hidden; padding: 8px 0; white-space: nowrap; }
+.ticker-inner { display: inline-block; animation: ticker 40s linear infinite; }
+.ticker-item { display: inline-block; padding: 0 40px; font-family: 'Oswald', sans-serif; font-size: 0.7rem; letter-spacing: 2px; color: var(--dim-white); }
+.ticker-item span { color: var(--pure-red); margin-right: 8px; }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.feed-entry { border-left: 3px solid var(--dried-blood); padding: 10px 15px; margin-bottom: 8px; transition: border-color 0.2s; }
+.feed-entry:hover { border-color: var(--pure-red); background: rgba(140,0,0,0.05); }
+.feed-entry.live { border-color: var(--pure-red); animation: pulse-border 2s infinite; }
+@keyframes pulse-border { 50% { border-color: var(--blood-red); } }
+.member-mini { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(74,0,0,0.4); }
+.member-mini:last-child { border-bottom: none; }
+.member-num { font-family: 'Metal Mania', cursive; color: var(--pure-red); font-size: 1.1rem; min-width: 30px; }
+.signal-canvas { width: 100%; height: 80px; border: 1px solid var(--dried-blood); background: #000; display: block; }
+</style>
+</head>
+<body>
+<div class="scanline-overlay"></div>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand slipknot-brand" href="../HTML Dosyaları/index.html">MAGGOT//OS [9]</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+      <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+      <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto slipknot-nav">
+        <li class="nav-item"><a class="nav-link" href="../HTML Dosyaları/system.html">IOWA_SYSTEM</a></li>
+        <li class="nav-item"><a class="nav-link" href="../HTML Dosyaları/mask.html">MASKS</a></li>
+        <li class="nav-item"><a class="nav-link" href="../HTML Dosyaları/discograpy.html">DISCOGRAPHY</a></li>
+        <li class="nav-item"><a class="nav-link" href="../HTML Dosyaları/terminal.html">TERMINAL</a></li>
+        <li class="nav-item"><a class="nav-link" href="../HTML Dosyaları/knotfest.html">KNOTFEST</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="ticker-bar">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item"><span>▶</span> SLIPKNOT — 25TH ANNIVERSARY WORLD TOUR ACTIVE</span>
+    <span class="ticker-item"><span>▶</span> NEW ALBUM RECORDING IN PROGRESS — DES MOINES BUNKER</span>
+    <span class="ticker-item"><span>▶</span> KNOTFEST 2026 — 31 OCT — STEREOCENTER ARENA</span>
+    <span class="ticker-item"><span>▶</span> TOTAL MAGGOTS WORLDWIDE: 4,200,000+ REGISTERED</span>
+    <span class="ticker-item"><span>▶</span> COREY TAYLOR: "THE MUSIC DOESN'T STOP UNTIL WE'RE ALL DEAD"</span>
+    <span class="ticker-item"><span>▶</span> IOWA (2001) — CERTIFIED 6X PLATINUM — US</span>
+    <span class="ticker-item"><span>▶</span> SLIPKNOT — 25TH ANNIVERSARY WORLD TOUR ACTIVE</span>
+    <span class="ticker-item"><span>▶</span> NEW ALBUM RECORDING IN PROGRESS — DES MOINES BUNKER</span>
+    <span class="ticker-item"><span>▶</span> KNOTFEST 2026 — 31 OCT — STEREOCENTER ARENA</span>
+    <span class="ticker-item"><span>▶</span> TOTAL MAGGOTS WORLDWIDE: 4,200,000+ REGISTERED</span>
+    <span class="ticker-item"><span>▶</span> COREY TAYLOR: "THE MUSIC DOESN'T STOP UNTIL WE'RE ALL DEAD"</span>
+    <span class="ticker-item"><span>▶</span> IOWA (2001) — CERTIFIED 6X PLATINUM — US</span>
+  </div>
+</div>
+
+<div class="header">
+  <p class="subtitle mb-3" style="font-size:0.65rem; letter-spacing:8px; color:var(--blood-red);">// MAGGOT_OS v6.6.6 — KERNEL LOADED //</p>
+  <h1 class="glitch" data-text="PEOPLE = SHIT">PEOPLE = SHIT</h1>
+  <p class="subtitle mt-3">WE ARE NOT YOUR KIND — EST. 1995, DES MOINES, IOWA</p>
+</div>
+
+<div class="hero-stats">
+  <div class="hero-stat">
+    <div class="label">Albums</div>
+    <div class="data-number">7</div>
+    <div class="stat-badge">STUDIO</div>
+  </div>
+  <div class="hero-stat">
+    <div class="label">Active Since</div>
+    <div class="data-number" style="font-size:1.8rem;">1995</div>
+    <div class="stat-badge">DES MOINES</div>
+  </div>
+  <div class="hero-stat">
+    <div class="label">Members</div>
+    <div class="data-number">9</div>
+    <div class="stat-badge">ACTIVE</div>
+  </div>
+  <div class="hero-stat">
+    <div class="label">Records Sold</div>
+    <div class="data-number" style="font-size:1.8rem;">30M+</div>
+    <div class="stat-badge">WORLDWIDE</div>
+  </div>
+</div>
+
+<main class="py-4">
+  <div class="container">
+
+    <div class="card-brutal mb-4" style="border-top-color: var(--warning-amber);">
+      <div class="d-flex flex-wrap gap-4 align-items-center justify-content-between">
+        <div>
+          <div class="stat-badge mb-2" style="border-color:var(--warning-amber); color:var(--warning-amber);">SYSTEM DIAGNOSTICS</div>
+          <p class="mb-0" style="font-size:0.8rem; line-height:2;">
+            <span class="status-ok">■</span> PULSE_RATE: <strong style="color:#22cc55">110 BPM</strong> &nbsp;|&nbsp;
+            <span class="status-ok">■</span> ADRENALINE: <strong style="color:#22cc55">98.7%</strong> &nbsp;|&nbsp;
+            <span class="status-crit">■</span> SANITY: <strong style="color:var(--pure-red)">NOT_FOUND</strong> &nbsp;|&nbsp;
+            <span class="status-warn">■</span> CROWD_TEMP: <strong style="color:var(--warning-amber)">41.2°C</strong> &nbsp;|&nbsp;
+            <span class="status-ok">■</span> DISTORTION: <strong style="color:#22cc55">MAX</strong>
+          </p>
+        </div>
+        <div style="font-family:'Oswald'; font-size:0.65rem; color:var(--dim-white);">
+          <span class="status-dot dot-green"></span>CORE ONLINE<br>
+          <span style="padding-left:14px; color:var(--dried-blood);">UPTIME: 25y 4m 12d</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card-brutal h-100">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5>LATEST RITUAL</h5>
+            <span class="stat-badge" style="animation: pulse-dot 1.5s infinite; color:#22cc55; border-color:#22cc55;">● LIVE</span>
+          </div>
+          <p style="font-size:0.82rem; line-height:1.7; color:var(--grunge-white);">
+            Incoming transmission from the stage. The <strong style="color:var(--pure-red)">25th Anniversary Tour</strong> is active. Blood, sweat, and heavy riffs detected in the pit.
+          </p>
+          <div class="barbed-divider"></div>
+          <div style="font-size:0.75rem; font-family:'Oswald'; letter-spacing:2px;">
+            <div class="d-flex justify-content-between mb-1"><span style="color:var(--dim-white)">LOCATION</span><span style="color:var(--grunge-white)">Des Moines, Iowa</span></div>
+            <div class="d-flex justify-content-between mb-1"><span style="color:var(--dim-white)">VENUE</span><span style="color:var(--grunge-white)">Wells Fargo Arena</span></div>
+            <div class="d-flex justify-content-between mb-1"><span style="color:var(--dim-white)">CAPACITY</span><span style="color:var(--pure-red)">17,000 / SOLD OUT</span></div>
+            <div class="d-flex justify-content-between"><span style="color:var(--dim-white)">NEXT DATE</span><span style="color:var(--warning-amber)">31 OCT 2026</span></div>
+          </div>
+          <canvas class="signal-canvas mt-3" id="waveCanvas"></canvas>
+          <button class="btn-brutal w-100 mt-3">JOIN MOSH PIT</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card-brutal h-100">
+          <h5 class="mb-3">NINE MEMBERS</h5>
+          <div id="memberList">
+            <div class="member-mini"><span class="member-num">#0</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">SID WILSON</div><div style="font-size:0.65rem;color:var(--dim-white);">TURNTABLES / DJ</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+            <div class="member-mini"><span class="member-num">#1</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">JOEY JORDISON</div><div style="font-size:0.65rem;color:var(--dim-white);">DRUMS [1975–2021]</div></div><span class="ms-auto stat-badge" style="color:var(--dim-white);border-color:var(--dim-white);">R.I.P.</span></div>
+            <div class="member-mini"><span class="member-num">#2</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">A. VENTURELLA</div><div style="font-size:0.65rem;color:var(--dim-white);">BASS GUITAR</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+            <div class="member-mini"><span class="member-num">#3</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">MICHAEL PFAFF</div><div style="font-size:0.65rem;color:var(--dim-white);">PERCUSSION</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+            <div class="member-mini"><span class="member-num">#4</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">JAMES ROOT</div><div style="font-size:0.65rem;color:var(--dim-white);">GUITAR</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+            <div class="member-mini"><span class="member-num">#5</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">CRAIG JONES</div><div style="font-size:0.65rem;color:var(--dim-white);">SAMPLER / KEYS</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+            <div class="member-mini"><span class="member-num">#6</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">SHAWN CRAHAN</div><div style="font-size:0.65rem;color:var(--dim-white);">PERCUSSION / CLOWN</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+            <div class="member-mini"><span class="member-num">#7</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">MICK THOMSON</div><div style="font-size:0.65rem;color:var(--dim-white);">GUITAR</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+            <div class="member-mini"><span class="member-num">#8</span><div><div style="font-size:0.8rem;color:var(--grunge-white);">COREY TAYLOR</div><div style="font-size:0.65rem;color:var(--dim-white);">VOCALS</div></div><span class="ms-auto stat-badge">ACTIVE</span></div>
+          </div>
+          <button class="btn-brutal w-100 mt-3" onclick="location.href='mask.html'">IDENTIFY ALL</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card-brutal h-100">
+          <h5 class="mb-3">ARCHIVED PAIN</h5>
+          <p style="font-size:0.82rem; line-height:1.7;">Recovered audio blocks from the <strong style="color:var(--pure-red)">1999 sessions</strong>. Raw files extracted from the Des Moines basement. Warning: High frequency distortion present.</p>
+          <div class="barbed-divider"></div>
+          <div style="font-size:0.75rem; font-family:'Oswald'; letter-spacing:2px;" class="mb-3">
+            <div class="d-flex justify-content-between mb-2"><span style="color:var(--dim-white)">NOW PLAYING</span></div>
+            <div style="color:var(--pure-red); font-size:0.85rem;">> (sic) — 1999</div>
+            <div class="progress-brutal mt-2"><div class="fill" style="width:63%"></div></div>
+            <div class="d-flex justify-content-between mt-1" style="font-size:0.6rem; color:var(--dim-white)"><span>2:18</span><span>3:42</span></div>
+          </div>
+          <div style="font-size:0.7rem; font-family:'Oswald'; letter-spacing:1px; color:var(--dim-white);">
+            <div class="d-flex justify-content-between py-1" style="border-bottom:1px solid var(--dried-blood)"><span>WAIT AND BLEED</span><span>2:27</span></div>
+            <div class="d-flex justify-content-between py-1" style="border-bottom:1px solid var(--dried-blood); color:var(--pure-red);"><span>▶ (SIC)</span><span>3:42</span></div>
+            <div class="d-flex justify-content-between py-1" style="border-bottom:1px solid var(--dried-blood)"><span>EYELESS</span><span>3:52</span></div>
+            <div class="d-flex justify-content-between py-1"><span>SURFACING</span><span>2:50</span></div>
+          </div>
+          <button class="btn-brutal w-100 mt-3" onclick="location.href='discograpy.html'">FULL ARCHIVE</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4 g-4">
+      <div class="col-md-8">
+        <div class="card-brutal">
+          <h5 class="mb-3">BROADCAST_FEED</h5>
+          <div id="feedContainer">
+            <div class="feed-entry live">
+              <div style="font-size:0.65rem; color:var(--pure-red); font-family:'Oswald'; letter-spacing:2px;" class="mb-1">
+                <span class="status-dot dot-red"></span>LIVE &nbsp;|&nbsp; 20:00:00
+              </div>
+              <div style="font-size:0.8rem;">New mask variants detected in the ventilation shafts. Full containment initiated.</div>
+            </div>
+            <div class="feed-entry">
+              <div style="font-size:0.65rem; color:var(--dim-white); font-family:'Oswald'; letter-spacing:2px;" class="mb-1">19:45:12</div>
+              <div style="font-size:0.8rem;">Core system update: 25 years of Iowa madness successfully integrated into memory banks.</div>
+            </div>
+            <div class="feed-entry">
+              <div style="font-size:0.65rem; color:var(--dim-white); font-family:'Oswald'; letter-spacing:2px;" class="mb-1">18:30:05</div>
+              <div style="font-size:0.8rem;">WARNING: Crowd energy exceeded safety parameters at Section 14-B. Structural risk: MODERATE.</div>
+            </div>
+            <div class="feed-entry">
+              <div style="font-size:0.65rem; color:var(--dim-white); font-family:'Oswald'; letter-spacing:2px;" class="mb-1">17:12:44</div>
+              <div style="font-size:0.8rem;">Discography module sync complete. 7 studio albums, 3 live records catalogued.</div>
+            </div>
+            <div class="feed-entry">
+              <div style="font-size:0.65rem; color:var(--dim-white); font-family:'Oswald'; letter-spacing:2px;" class="mb-1">16:00:01</div>
+              <div style="font-size:0.8rem;">KNOTFEST 2026 ticket allocation: 94% consumed. Pre-sale override enabled.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-brutal h-100">
+          <h5 class="mb-3">GLOBAL SIGNAL</h5>
+          <div style="font-size:0.75rem; font-family:'Oswald'; letter-spacing:2px;">
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1"><span style="color:var(--dim-white)">NORTH AMERICA</span><span style="color:var(--pure-red)">98%</span></div>
+              <div class="progress-brutal"><div class="fill" style="width:98%"></div></div>
+            </div>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1"><span style="color:var(--dim-white)">EUROPE</span><span style="color:var(--pure-red)">87%</span></div>
+              <div class="progress-brutal"><div class="fill" style="width:87%"></div></div>
+            </div>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1"><span style="color:var(--dim-white)">ASIA PACIFIC</span><span style="color:var(--pure-red)">61%</span></div>
+              <div class="progress-brutal"><div class="fill" style="width:61%"></div></div>
+            </div>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1"><span style="color:var(--dim-white)">SOUTH AMERICA</span><span style="color:var(--pure-red)">74%</span></div>
+              <div class="progress-brutal"><div class="fill" style="width:74%"></div></div>
+            </div>
+          </div>
+          <div class="barbed-divider"></div>
+          <div style="font-size:0.65rem; color:var(--dim-white); font-family:'Oswald'; letter-spacing:2px; text-align:center;">
+            SIGNAL REACH: <span style="color:var(--pure-red)">147 COUNTRIES</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="footer text-center">
+  <div class="barbed-divider"></div>
+  <p class="mb-1">NONAGON // ⛧ // MAGGOT CORE SYSTEM // EST. 1995 — DES MOINES, IA</p>
+  <small style="color:var(--dried-blood); letter-spacing:4px;">IF YOU'RE 555 THEN I'M 666</small>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Animated waveform
+const canvas = document.getElementById('waveCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = canvas.offsetWidth;
+canvas.height = 80;
+let t = 0;
+function drawWave() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#cc0000';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (let x = 0; x < canvas.width; x++) {
+    const noise = Math.random() * 4 - 2;
+    const y = canvas.height/2 + Math.sin((x * 0.04) + t) * 18 + Math.sin((x * 0.1) + t * 1.7) * 8 + noise;
+    x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  t += 0.06;
+  requestAnimationFrame(drawWave);
+}
+drawWave();
+</script>
+</body>
+</html>

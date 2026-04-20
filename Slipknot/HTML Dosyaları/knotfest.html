@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <link rel="icon" type="image/jpeg" href="../Resimler/site-icon.jpg">
+    <meta charset="UTF-8">
+    <title>LIVE_RITUALS — KNOTFEST</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Oswald:wght@700&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS Dosyaları/u1.css">
+    <style>
+        .show-card {
+            background: var(--card-bg);
+            border: 1px solid var(--dried-blood);
+            border-left: 6px solid var(--blood-red);
+            padding: 22px 24px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .show-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(140,0,0,0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .show-card:hover { border-left-color: var(--pure-red); transform: translateX(4px); box-shadow: 0 0 25px rgba(150,0,0,0.2); }
+        .show-card.headliner { border-left-color: var(--pure-red); border-top: 1px solid var(--blood-red); }
+        .show-date { font-family: 'Metal Mania', cursive; font-size: 1.4rem; color: var(--pure-red); min-width: 130px; text-shadow: 0 0 15px rgba(200,0,0,0.5); }
+        .show-info { flex: 1; min-width: 180px; }
+        .show-venue { font-family: 'Oswald'; font-weight: 700; color: var(--grunge-white); font-size: 0.95rem; letter-spacing: 2px; }
+        .show-city { font-family: 'Oswald'; color: var(--dim-white); font-size: 0.72rem; letter-spacing: 3px; margin-top: 3px; }
+        .show-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .capacity-bar { width: 100px; }
+        .filter-btn { background: transparent; border: 1px solid var(--dried-blood); color: var(--dim-white); font-family: 'Oswald'; font-size: 0.65rem; letter-spacing: 2px; padding: 5px 14px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+        .filter-btn.active, .filter-btn:hover { border-color: var(--pure-red); color: var(--pure-red); background: rgba(140,0,0,0.1); }
+    </style>
+</head>
+<body>
+<div class="scanline-overlay"></div>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand slipknot-brand" href="index.html">MAGGOT//OS [9]</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+            <span style="display:block;width:22px;height:2px;background:var(--pure-red);margin:5px 0;"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ms-auto slipknot-nav">
+                <li class="nav-item"><a class="nav-link" href="system.html">IOWA_SYSTEM</a></li>
+                <li class="nav-item"><a class="nav-link" href="mask.html">MASKS</a></li>
+                <li class="nav-item"><a class="nav-link" href="discograpy.html">DISCOGRAPHY</a></li>
+                <li class="nav-item"><a class="nav-link" href="terminal.html">TERMINAL</a></li>
+                <li class="nav-item"><a class="nav-link active" href="knotfest.html">KNOTFEST</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <p class="subtitle mb-2" style="font-size:0.65rem; letter-spacing:6px; color:var(--blood-red);">// 25TH ANNIVERSARY WORLD TOUR — 2026 //</p>
+    <h1 class="glitch" data-text="LIVE_RITUALS">LIVE_RITUALS</h1>
+    <p class="subtitle mt-2">KNOTFEST — THE RITUAL CONTINUES</p>
+</div>
+
+<div class="content container">
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number">18</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">SHOWS REMAINING</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number" style="font-size:2rem;">12</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">COUNTRIES</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number" style="font-size:1.8rem;">250K+</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">TICKETS SOLD</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card-brutal text-center p-3">
+                <div class="data-number" style="color:var(--warning-amber); font-size:2rem;">3</div>
+                <div style="font-size:0.65rem; font-family:'Oswald'; letter-spacing:2px; color:var(--dim-white);">SOLD OUT</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mb-4 flex-wrap">
+        <button class="filter-btn active" onclick="filterShows('all', this)">ALL SHOWS</button>
+        <button class="filter-btn" onclick="filterShows('us', this)">NORTH AMERICA</button>
+        <button class="filter-btn" onclick="filterShows('eu', this)">EUROPE</button>
+        <button class="filter-btn" onclick="filterShows('ap', this)">ASIA PACIFIC</button>
+    </div>
+
+    <div id="showList">
+        <!-- Injected by JS -->
+    </div>
+
+</div>
+
+<div class="footer text-center">
+    <div class="barbed-divider"></div>
+    <p class="mb-1">NONAGON // ⛧ // MAGGOT CORE SYSTEM // EST. 1995</p>
+    <small style="color:var(--dried-blood);">IF YOU'RE 555 THEN I'M 666</small>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const shows = [
+    { date: '31 OCT 2026', city: 'DES MOINES, IA — USA', venue: 'STEREOCENTER ARENA', cap: 17000, sold: 94, status: 'ALMOST SOLD OUT', region: 'us', headliner: true },
+    { date: '05 NOV 2026', city: 'CHICAGO, IL — USA', venue: 'UNITED CENTER', cap: 22000, sold: 81, status: 'ON SALE', region: 'us', headliner: false },
+    { date: '08 NOV 2026', city: 'NEW YORK, NY — USA', venue: 'MADISON SQUARE GARDEN', cap: 20789, sold: 89, status: 'ON SALE', region: 'us', headliner: true },
+    { date: '12 NOV 2026', city: 'LOS ANGELES, CA — USA', venue: 'KNOTFEST GROUNDS', cap: 40000, sold: 72, status: 'ON SALE', region: 'us', headliner: false },
+    { date: '16 NOV 2026', city: 'TORONTO, ON — CANADA', venue: 'SCOTIABANK ARENA', cap: 19800, sold: 65, status: 'ON SALE', region: 'us', headliner: false },
+    { date: '19 NOV 2026', city: 'LONDON, UK', venue: 'O2 ARENA', cap: 20000, sold: 97, status: 'SOLD OUT', region: 'eu', headliner: true },
+    { date: '22 NOV 2026', city: 'PARIS, FRANCE', venue: 'ACCOR ARENA', cap: 18000, sold: 78, status: 'ON SALE', region: 'eu', headliner: false },
+    { date: '25 NOV 2026', city: 'AMSTERDAM, NETHERLANDS', venue: 'ZIGGO DOME', cap: 17000, sold: 83, status: 'ON SALE', region: 'eu', headliner: false },
+    { date: '27 NOV 2026', city: 'BERLIN, GERMANY', venue: 'MERCEDES-BENZ ARENA', cap: 17000, sold: 74, status: 'ON SALE', region: 'eu', headliner: false },
+    { date: '01 DEC 2026', city: 'MADRID, SPAIN', venue: 'WiZink CENTER', cap: 17500, sold: 61, status: 'ON SALE', region: 'eu', headliner: false },
+    { date: '05 DEC 2026', city: 'TOKYO, JAPAN', venue: 'MAKUHARI MESSE', cap: 20000, sold: 55, status: 'ON SALE', region: 'ap', headliner: false },
+    { date: '08 DEC 2026', city: 'SYDNEY, AUSTRALIA', venue: 'QUDOS BANK ARENA', cap: 21000, sold: 48, status: 'ON SALE', region: 'ap', headliner: false },
+];
+
+function renderShows(filter) {
+    const container = document.getElementById('showList');
+    container.innerHTML = '';
+    shows.filter(s => filter === 'all' || s.region === filter).forEach(s => {
+        const sc = s.status === 'SOLD OUT' ? 'var(--pure-red)' : (s.status === 'ALMOST SOLD OUT' ? 'var(--warning-amber)' : '#22cc55');
+        const div = document.createElement('div');
+        div.className = 'show-card' + (s.headliner ? ' headliner' : '');
+        div.innerHTML = `
+            <div class="show-date">${s.date}</div>
+            <div class="show-info">
+                <div class="show-venue">${s.venue}</div>
+                <div class="show-city">${s.city}</div>
+            </div>
+            <div class="show-right">
+                <div class="capacity-bar">
+                    <div style="font-size:0.6rem; font-family:'Oswald'; color:var(--dim-white); letter-spacing:2px; margin-bottom:4px;">${s.sold}% CAPACITY</div>
+                    <div class="progress-brutal"><div class="fill" style="width:${s.sold}%;"></div></div>
+                    <div style="font-size:0.6rem; color:var(--dim-white); font-family:'Oswald';">${s.cap.toLocaleString()} CAP</div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="stat-badge" style="color:${sc}; border-color:${sc}; margin-bottom:8px;">${s.status}</div><br>
+                    <button class="btn-brutal" style="font-size:0.6rem; padding:7px 16px;">GET TICKETS</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function filterShows(region, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderShows(region);
+}
+
+renderShows('all');
+</script>
+</body>
+</html>
